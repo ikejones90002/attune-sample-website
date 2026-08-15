@@ -1,0 +1,51 @@
+.profile-swipe {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+}
+
+.profile-card {
+  background: var(--bg-card);
+  border-radius: 16px;
+  border: 2px solid var(--border-medium);
+  padding: 1rem;
+  text-align: center;
+  transition: transform 0.3s ease;
+}
+
+.profile-card img {
+  width: 100%;
+  max-width: 300px;
+  border-radius: 16px;
+}
+
+.profile-card h2 {
+  margin: 1rem 0 0.5rem;
+  color: var(--text-primary);
+}
+
+.profile-card p {
+  color: var(--text-secondary);
+}
+
+.swipe-actions {
+  margin-top: 1rem;
+  display: flex;
+  gap: 1rem;
+}
+
+.swipe-actions button {
+  background: var(--accent-primary);
+  color: white;
+  border: none;
+  padding: 0.75rem 1.5rem;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.swipe-actions button:hover {
+  background: var(--accent-hover);
+}

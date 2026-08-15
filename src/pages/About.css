@@ -1,0 +1,165 @@
+.about-page {
+  width: 100%;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.about-content {
+  display: flex;
+  flex-direction: column;
+  gap: 3rem;
+}
+
+.about-section {
+  background: var(--bg-card);
+  padding: 2.5rem;
+  border-radius: 16px;
+  border: 1px solid var(--border-subtle);
+}
+
+.about-section h3 {
+  font-size: 1.8rem;
+  margin-bottom: 1.5rem;
+  color: var(--accent-light);
+}
+
+.about-section h4 {
+  font-size: 1.2rem;
+  margin-bottom: 0.75rem;
+  color: var(--text-primary);
+}
+
+.about-section p {
+  font-size: 1.05rem;
+  line-height: 1.8;
+  color: var(--text-secondary);
+  margin-bottom: 1rem;
+}
+
+.about-section p:last-child {
+  margin-bottom: 0;
+}
+
+/* Differentiators Grid */
+.differentiator-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+  gap: 1.5rem;
+  margin-top: 1.5rem;
+}
+
+.differentiator {
+  background: var(--bg-secondary);
+  padding: 1.5rem;
+  border-radius: 12px;
+  border: 1px solid var(--border-subtle);
+  transition: all 0.3s ease;
+}
+
+.differentiator:hover {
+  border-color: var(--accent-primary);
+  transform: translateY(-2px);
+}
+
+.differentiator h4 {
+  color: var(--accent-light);
+  margin-bottom: 0.75rem;
+}
+
+.differentiator p {
+  font-size: 0.95rem;
+  margin: 0;
+}
+
+/* Principles List */
+.principles-list {
+  list-style: none;
+  padding: 0;
+  margin: 1.5rem 0 0 0;
+}
+
+.principles-list li {
+  padding: 1rem 0 1rem 2.5rem;
+  position: relative;
+  color: var(--text-secondary);
+  line-height: 1.7;
+  font-size: 1.05rem;
+  border-left: 3px solid var(--accent-primary);
+  margin-bottom: 1rem;
+  padding-left: 1.5rem;
+}
+
+.principles-list li strong {
+  color: var(--text-primary);
+  display: block;
+  margin-bottom: 0.25rem;
+}
+
+/* Competitor List */
+.competitor-list {
+  list-style: none;
+  padding: 0;
+  margin: 1.5rem 0;
+}
+
+.competitor-list li {
+  padding: 0.75rem 0 0.75rem 2rem;
+  position: relative;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+.competitor-list li::before {
+  content: "✗";
+  position: absolute;
+  left: 0;
+  color: var(--error);
+  font-weight: bold;
+  font-size: 1.2rem;
+}
+
+.competitor-list li strong {
+  color: var(--text-primary);
+}
+
+/* CTA Section */
+.about-section.cta {
+  background: linear-gradient(135deg, var(--bg-secondary) 0%, var(--bg-tertiary) 100%);
+  border: 2px solid var(--accent-primary);
+  text-align: center;
+  padding: 3rem 2.5rem;
+}
+
+.about-section.cta h3 {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+}
+
+.about-section.cta p {
+  font-size: 1.1rem;
+  margin-bottom: 2rem;
+}
+
+.about-section.cta button {
+  margin-top: 1rem;
+}
+
+/* Responsive */
+@media (max-width: 768px) {
+  .about-page {
+    padding: 1.5rem;
+  }
+
+  .about-section {
+    padding: 2rem 1.5rem;
+  }
+
+  .differentiator-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .principles-list li {
+    padding-left: 1rem;
+  }
+}
