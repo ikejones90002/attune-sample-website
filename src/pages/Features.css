@@ -849,6 +849,54 @@ input[type="range"]::-moz-range-thumb {
   .timeline-badge {
     align-self: flex-start;
   }
+
+  .accessibility-demo {
+    padding: 1.5rem;
+  }
+
+  .demo-card {
+    padding: 1.5rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .features-page {
+    padding: 1rem;
+  }
+
+  .page-header {
+    padding: 1rem 0;
+    margin-bottom: 2rem;
+  }
+
+  .hero-feature,
+  .feature-showcase,
+  .theme-demo-section {
+    padding: 1.5rem 1rem;
+  }
+
+  .feature-badge {
+    font-size: 0.75rem;
+    padding: 0.4rem 0.8rem;
+  }
+
+  .mode-card,
+  .comm-style-card,
+  .safety-feature {
+    padding: 1.5rem;
+  }
+
+  .features-cta {
+    padding: 3rem 1.5rem;
+  }
+
+  .features-cta h3 {
+    font-size: 1.5rem;
+  }
+
+  .features-cta p {
+    font-size: 1rem;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {

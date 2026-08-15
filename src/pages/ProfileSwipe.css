@@ -13,6 +13,8 @@
   padding: 1rem;
   text-align: center;
   transition: transform 0.3s ease;
+  max-width: 400px;
+  width: 100%;
 }
 
 .profile-card img {
@@ -34,6 +36,8 @@
   margin-top: 1rem;
   display: flex;
   gap: 1rem;
+  flex-wrap: wrap;
+  justify-content: center;
 }
 
 .swipe-actions button {
@@ -44,8 +48,49 @@
   border-radius: 12px;
   cursor: pointer;
   transition: background 0.2s ease;
+  flex: 1;
+  min-width: 120px;
 }
 
 .swipe-actions button:hover {
   background: var(--accent-hover);
+}
+
+/* Mobile responsive styles */
+@media (max-width: 768px) {
+  .profile-swipe {
+    padding: 1rem;
+  }
+
+  .profile-card {
+    padding: 0.75rem;
+  }
+
+  .profile-card img {
+    max-width: 100%;
+  }
+
+  .swipe-actions {
+    gap: 0.5rem;
+  }
+
+  .swipe-actions button {
+    padding: 0.6rem 1rem;
+    font-size: 0.9rem;
+  }
+}
+
+@media (max-width: 480px) {
+  .profile-card h2 {
+    font-size: 1.25rem;
+  }
+
+  .profile-card p {
+    font-size: 0.9rem;
+  }
+
+  .swipe-actions button {
+    min-width: 100px;
+    padding: 0.5rem 0.75rem;
+  }
 }
