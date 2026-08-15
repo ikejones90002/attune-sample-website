@@ -11,7 +11,7 @@ export const Logo: React.FC<LogoProps> = ({
 }) => {
   return (
     <img
-      src="/logo.png"
+      src="/attune-sample-website/logo.png"
       alt="Attune logo"
       width={size}
       height={size}

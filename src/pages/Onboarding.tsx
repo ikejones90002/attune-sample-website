@@ -120,7 +120,7 @@ function Onboarding() {
           <div className="onboarding-step welcome-step">
             <div className="step-content">
               <img 
-                src="/logo.png" 
+                src="/attune-sample-website/logo.png" 
                 alt="Attune logo" 
                 className="welcome-logo"
               />

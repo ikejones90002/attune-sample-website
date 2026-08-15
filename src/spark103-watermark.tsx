@@ -23,7 +23,7 @@ export function Spark103Watermark() {
       }}
     >
       <img
-        src="/spark103-mark.png"
+        src="/attune-sample-website/spark103-mark.png"
         alt=""
         width={28}
         height={28}

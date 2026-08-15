@@ -7,14 +7,14 @@ const profiles = [
     name: 'Alex Chen',
     age: 28,
     location: 'San Francisco',
-    photo: '/image.png',
+    photo: '/attune-sample-website/image.png',
   },
   {
     id: 2,
     name: 'Jordan Smith',
     age: 32,
     location: 'Los Angeles',
-    photo: '/image-2.jpg',
+    photo: '/attune-sample-website/image-2.jpg',
   },
 ];
 
