@@ -777,11 +777,15 @@ footer {
     max-height: 0;
     overflow: hidden;
     transition: max-height 0.3s ease;
+    pointer-events: none;
+    visibility: hidden;
   }
 
   .main-nav.mobile-open {
     max-height: 500px;
     padding: 1rem;
+    pointer-events: auto;
+    visibility: visible;
   }
 
   .nav-link {
