@@ -34,7 +34,7 @@ function Features() {
             <div className="demo-card" role="region" aria-label="Profile card example">
               <div className="demo-header">
                 <img
-                  src="/attune-sample-website/image.png"
+                  src="/image.png"
                   alt="Profile photo of Alex Chen, smiling outdoors"
                   className="demo-avatar"
                 />

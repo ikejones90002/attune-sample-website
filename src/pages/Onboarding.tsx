@@ -119,9 +119,9 @@ function Onboarding() {
         {currentStep === 'welcome' && (
           <div className="onboarding-step welcome-step">
             <div className="step-content">
-              <img 
-                src="/attune-sample-website/logo.png" 
-                alt="Attune logo" 
+              <img
+                src="/logo.png"
+                alt="Attune logo"
                 className="welcome-logo"
               />
               <h1>Welcome to Attune</h1>
