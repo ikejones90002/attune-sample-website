@@ -84,7 +84,7 @@ function App() {
 
 function AppWrapper() {
   return (
-    <Router>
+    <Router basename="/attune-sample-website">
       <App />
     </Router>
   );

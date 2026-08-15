@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import './Features.css';
+import profileImage from '/image.png';
 
 function Features() {
   const [activeCaptionDemo, setActiveCaptionDemo] = useState(false);
@@ -34,7 +35,7 @@ function Features() {
             <div className="demo-card" role="region" aria-label="Profile card example">
               <div className="demo-header">
                 <img
-                  src="/image.png"
+                  src={profileImage}
                   alt="Profile photo of Alex Chen, smiling outdoors"
                   className="demo-avatar"
                 />

@@ -1,3 +1,5 @@
+import spark103Mark from '/spark103-mark.png';
+
 export function Spark103Watermark() {
   return (
     <div
@@ -23,7 +25,7 @@ export function Spark103Watermark() {
       }}
     >
       <img
-        src="/spark103-mark.png"
+        src={spark103Mark}
         alt=""
         width={28}
         height={28}

@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import './Onboarding.css';
+import logoImage from '/logo.png';
 
 interface AccessibilityNeeds {
   deafHoH: boolean;
@@ -120,7 +121,7 @@ function Onboarding() {
           <div className="onboarding-step welcome-step">
             <div className="step-content">
               <img
-                src="/logo.png"
+                src={logoImage}
                 alt="Attune logo"
                 className="welcome-logo"
               />

@@ -1,5 +1,7 @@
 import React, { useState } from 'react';
 import './ProfileSwipe.css';
+import image1 from '/image.png';
+import image2 from '/image-2.jpg';
 
 const profiles = [
   {
@@ -7,14 +9,14 @@ const profiles = [
     name: 'Alex Chen',
     age: 28,
     location: 'San Francisco',
-    photo: '/image.png',
+    photo: image1,
   },
   {
     id: 2,
     name: 'Jordan Smith',
     age: 32,
     location: 'Los Angeles',
-    photo: '/image-2.jpg',
+    photo: image2,
   },
 ];
 

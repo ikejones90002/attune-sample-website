@@ -1,22 +1,23 @@
 import React from 'react';
+import logoImage from '/logo.png';
 
 interface LogoProps {
   size?: number;
   className?: string;
 }
 
-export const Logo: React.FC<LogoProps> = ({ 
+export const Logo: React.FC<LogoProps> = ({
   size = 48,
   className = ''
 }) => {
   return (
     <img
-      src="/logo.png"
+      src={logoImage}
       alt="Attune logo"
       width={size}
       height={size}
       className={className}
-      style={{ 
+      style={{
         borderRadius: '50%',
         objectFit: 'cover',
         objectPosition: 'center',
