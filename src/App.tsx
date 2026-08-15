@@ -1,4 +1,5 @@
 import { BrowserRouter as Router, Routes, Route, Link, useLocation } from 'react-router-dom';
+import { useState } from 'react';
 import './App.css';
 import { Logo } from './components/Logo';
 import Home from './pages/Home';
@@ -12,19 +13,40 @@ import ProfileSwipe from './pages/ProfileSwipe';
 
 function Navigation() {
   const location = useLocation();
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const isActive = (path: string) => location.pathname === path;
 
+  const toggleMobileMenu = () => {
+    setIsMobileMenuOpen(!isMobileMenuOpen);
+  };
+
+  const closeMobileMenu = () => {
+    setIsMobileMenuOpen(false);
+  };
+
   return (
-    <nav className="main-nav" aria-label="Main navigation">
-      <Link to="/" className={`nav-link ${isActive('/') ? 'active' : ''}`} aria-current={isActive('/') ? 'page' : undefined}>Home</Link>
-      <Link to="/features" className={`nav-link ${isActive('/features') ? 'active' : ''}`} aria-current={isActive('/features') ? 'page' : undefined}>Features</Link>
-      <Link to="/about" className={`nav-link ${isActive('/about') ? 'active' : ''}`} aria-current={isActive('/about') ? 'page' : undefined}>About</Link>
-      <Link to="/roadmap" className={`nav-link ${isActive('/roadmap') ? 'active' : ''}`} aria-current={isActive('/roadmap') ? 'page' : undefined}>Roadmap</Link>
-      <Link to="/architecture" className={`nav-link ${isActive('/architecture') ? 'active' : ''}`} aria-current={isActive('/architecture') ? 'page' : undefined}>Architecture</Link>
-      <Link to="/onboarding" className={`nav-link ${isActive('/onboarding') ? 'active' : ''}`} aria-current={isActive('/onboarding') ? 'page' : undefined}>Onboarding</Link>
-      <Link to="/profile" className={`nav-link ${isActive('/profile') ? 'active' : ''}`} aria-current={isActive('/profile') ? 'page' : undefined}>Profile</Link>
-      <Link to="/swipe" className={`nav-link ${isActive('/swipe') ? 'active' : ''}`} aria-current={isActive('/swipe') ? 'page' : undefined}>Swipe</Link>
-    </nav>
+    <>
+      <button
+        className="mobile-menu-toggle"
+        onClick={toggleMobileMenu}
+        aria-label="Toggle navigation menu"
+        aria-expanded={isMobileMenuOpen}
+      >
+        <span className="hamburger-line"></span>
+        <span className="hamburger-line"></span>
+        <span className="hamburger-line"></span>
+      </button>
+      <nav className={`main-nav ${isMobileMenuOpen ? 'mobile-open' : ''}`} aria-label="Main navigation">
+        <Link to="/" className={`nav-link ${isActive('/') ? 'active' : ''}`} aria-current={isActive('/') ? 'page' : undefined} onClick={closeMobileMenu}>Home</Link>
+        <Link to="/features" className={`nav-link ${isActive('/features') ? 'active' : ''}`} aria-current={isActive('/features') ? 'page' : undefined} onClick={closeMobileMenu}>Features</Link>
+        <Link to="/about" className={`nav-link ${isActive('/about') ? 'active' : ''}`} aria-current={isActive('/about') ? 'page' : undefined} onClick={closeMobileMenu}>About</Link>
+        <Link to="/roadmap" className={`nav-link ${isActive('/roadmap') ? 'active' : ''}`} aria-current={isActive('/roadmap') ? 'page' : undefined} onClick={closeMobileMenu}>Roadmap</Link>
+        <Link to="/architecture" className={`nav-link ${isActive('/architecture') ? 'active' : ''}`} aria-current={isActive('/architecture') ? 'page' : undefined} onClick={closeMobileMenu}>Architecture</Link>
+        <Link to="/onboarding" className={`nav-link ${isActive('/onboarding') ? 'active' : ''}`} aria-current={isActive('/onboarding') ? 'page' : undefined} onClick={closeMobileMenu}>Onboarding</Link>
+        <Link to="/profile" className={`nav-link ${isActive('/profile') ? 'active' : ''}`} aria-current={isActive('/profile') ? 'page' : undefined} onClick={closeMobileMenu}>Profile</Link>
+        <Link to="/swipe" className={`nav-link ${isActive('/swipe') ? 'active' : ''}`} aria-current={isActive('/swipe') ? 'page' : undefined} onClick={closeMobileMenu}>Swipe</Link>
+      </nav>
+    </>
   );
 }
 
