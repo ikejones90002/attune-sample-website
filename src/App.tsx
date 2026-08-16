@@ -70,8 +70,8 @@ function App() {
           </div>
           <Navigation />
         </header>
-      )} 
-      <main id="main-content">
+      )}
+      <main id="main-content" className={`main-content ${location.pathname.replace('/', '')}`}>
         <Routes>
           <Route path="/" element={<Home />} />
           <Route path="/features" element={<Features />} />
@@ -83,23 +83,6 @@ function App() {
           <Route path="/swipe" element={<ProfileSwipe />} />
         </Routes>
       </main>
-      {!hideHeaderFooter && (
-        <footer>
-          <div className="footer-content">
-            <p className="footer-tagline">Accessibility-first dating for Deaf/HoH and Blind/Low-Vision communities.</p>
-            <div className="footer-links">
-              <Link to="/">Home</Link>
-              <Link to="/features">Features</Link>
-              <Link to="/about">About</Link>
-              <Link to="/roadmap">Roadmap</Link>
-              <Link to="/architecture">Architecture</Link>
-              <Link to="/onboarding">Onboarding</Link>
-              <Link to="/profile">Profile</Link>
-            </div>
-            <p className="footer-copyright">© 2024 Attune. Building accessibility-first, not accessibility-retrofitted.</p>
-          </div>
-        </footer>
-      )} 
     </div>
   );
 }

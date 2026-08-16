@@ -125,28 +125,31 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 0.5rem;
+  gap: 0.25rem;
   flex-wrap: wrap;
-  background: var(--bg-card);
-  padding: 0.75rem 1rem;
-  border-radius: 50px;
-  border: 1px solid var(--border-subtle);
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.2);
-  max-width: 700px;
+  background: rgba(255, 255, 255, 0.05);
+  backdrop-filter: blur(10px);
+  padding: 0.5rem 1rem;
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  max-width: 800px;
   margin: 0 auto;
 }
 
 .nav-link {
   position: relative;
-  padding: 0.75rem 1.5rem;
+  padding: 0.6rem 1.25rem;
   color: var(--text-secondary);
   text-decoration: none;
-  font-weight: 500;
-  font-size: 0.95rem;
-  border-radius: 25px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  border-radius: 12px;
   transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
   white-space: nowrap;
   overflow: hidden;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
 }
 
 .nav-link::before {
@@ -157,7 +160,7 @@
   right: 0;
   bottom: 0;
   background: linear-gradient(135deg, var(--accent-primary), var(--accent-hover));
-  border-radius: 25px;
+  border-radius: 12px;
   opacity: 0;
   transition: opacity 0.3s ease;
   z-index: -1;
@@ -165,11 +168,12 @@
 
 .nav-link:hover {
   color: var(--text-primary);
-  transform: translateY(-2px);
+  transform: translateY(-1px);
+  background: rgba(139, 92, 246, 0.1);
 }
 
 .nav-link:hover::before {
-  opacity: 0.15;
+  opacity: 0.2;
 }
 
 .nav-link.active {
@@ -179,7 +183,7 @@
 }
 
 .nav-link.active::before {
-  opacity: 1;
+  opacity: 0;
 }
 
 .nav-link:focus-visible {
@@ -192,12 +196,40 @@ main {
   flex: 1;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 2rem;
-  max-width: 1400px;
-  margin: 0 auto;
-  width: 100%;
+  min-height: calc(100vh - 200px);
+}
+
+/* Page-specific styling for visual distinction */
+main.home {
+  background: linear-gradient(180deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
+}
+
+main.features {
+  background: linear-gradient(180deg, #0f0c29 0%, #302b63 50%, #24243e 100%);
+}
+
+main.about {
+  background: linear-gradient(180deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+}
+
+main.roadmap {
+  background: linear-gradient(180deg, #141e30 0%, #243b55 100%);
+}
+
+main.architecture {
+  background: linear-gradient(180deg, #0f2027 0%, #203a43 50%, #2c5364 100%);
+}
+
+main.onboarding {
+  background: linear-gradient(180deg, #2c3e50 0%, #3498db 100%);
+}
+
+main.profile {
+  background: linear-gradient(180deg, #434343 0%, #000000 100%);
+}
+
+main.swipe {
+  background: linear-gradient(180deg, #ff6b6b 0%, #ee5a24 100%);
 }
 
 /* Card Styles */
@@ -768,17 +800,19 @@ footer {
     top: 100%;
     left: 0;
     right: 0;
-    background: linear-gradient(135deg, var(--bg-secondary) 0%, var(--bg-tertiary) 100%);
+    background: rgba(255, 255, 255, 0.05);
+    backdrop-filter: blur(10px);
     flex-direction: column;
     gap: 0;
     padding: 0;
-    border-bottom: 1px solid var(--border-subtle);
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
     max-height: 0;
     overflow: hidden;
     transition: max-height 0.3s ease;
     pointer-events: none;
     visibility: hidden;
+    border-radius: 0;
   }
 
   .main-nav.mobile-open {
@@ -790,8 +824,10 @@ footer {
 
   .nav-link {
     padding: 1rem;
-    border-bottom: 1px solid var(--border-subtle);
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
     text-align: center;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
   }
 
   .nav-link:last-child {
