@@ -232,6 +232,22 @@ main.swipe {
   background: linear-gradient(180deg, #ff6b6b 0%, #ee5a24 100%);
 }
 
+/* Footer Styles */
+.app-footer {
+  background: linear-gradient(135deg, var(--bg-secondary) 0%, var(--bg-tertiary) 100%);
+  padding: 2rem;
+  text-align: center;
+  border-top: 1px solid var(--border-subtle);
+  margin-top: auto;
+}
+
+.app-footer p {
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  margin: 0;
+  line-height: 1.6;
+}
+
 /* Card Styles */
 .card {
   background: var(--bg-card);

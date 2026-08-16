@@ -48,3 +48,12 @@ export default tseslint.config({
   },
 })
 ```
+
+---
+
+<p align="center">
+  <img src="https://spark103.dev/assets/brand/spark103-logo.png" alt="SPARK103" width="120" />
+</p>
+
+Built with [SPARK103](https://spark103.dev) — Imagination → Spark → Innovation → Creation.
+A product of 103 Software Solutions LLC.
