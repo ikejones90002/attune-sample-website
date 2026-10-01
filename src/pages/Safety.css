@@ -1,0 +1,46 @@
+.safety-page {
+  max-width: 44rem;
+  margin: 0 auto;
+  padding: var(--space-4);
+}
+
+.safety-card {
+  margin-bottom: var(--space-5);
+}
+
+.safety-list {
+  padding-left: var(--space-5);
+  line-height: var(--leading-relaxed);
+}
+
+.safety-list li {
+  margin-bottom: var(--space-2);
+}
+
+.safety-list li::marker {
+  color: var(--color-accent-text);
+}
+
+.help-box {
+  background: var(--color-bg-overlay);
+  border: 1px solid var(--color-border-medium);
+  border-radius: var(--radius-md);
+  padding: var(--space-4);
+}
+
+.help-box strong {
+  font-size: var(--text-lg);
+}
+
+.help-box p {
+  margin-bottom: var(--space-2);
+}
+
+.help-box p:last-child {
+  margin-bottom: var(--space-0);
+}
+
+.safety-page :focus-visible {
+  outline: var(--focus-width) solid var(--color-focus-ring);
+  outline-offset: var(--focus-offset);
+}

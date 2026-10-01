@@ -1,0 +1,226 @@
+/* Discover page — token-only styles. */
+
+.discover-page {
+  max-width: 42rem;
+  margin: 0 auto;
+  padding: var(--space-6) var(--space-4);
+}
+
+/* ---- Deck card ---- */
+.deck-card {
+  background-color: var(--color-bg-card);
+  border: 1px solid var(--color-border-subtle);
+  border-radius: var(--radius-lg);
+  padding: var(--space-6);
+  text-align: center;
+  box-shadow: var(--shadow-accent);
+}
+
+.deck-avatar {
+  margin-bottom: var(--space-4);
+}
+
+.deck-name {
+  font-size: var(--text-2xl);
+  line-height: var(--leading-tight);
+  color: var(--color-text);
+  margin: 0 0 var(--space-1);
+}
+
+.deck-meta {
+  font-size: var(--text-sm);
+  color: var(--color-text-secondary);
+  margin: 0 0 var(--space-4);
+}
+
+.deck-bio {
+  color: var(--color-text);
+  line-height: var(--leading-relaxed);
+  margin: 0 0 var(--space-4);
+}
+
+.deck-label {
+  font-size: var(--text-xs);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  font-weight: 600;
+  color: var(--color-text-muted);
+  margin: var(--space-4) 0 var(--space-2);
+}
+
+.deck-card .badge-list {
+  justify-content: center;
+  margin-bottom: var(--space-4);
+}
+
+.deck-card .badge-list:last-of-type {
+  margin-bottom: 0;
+}
+
+/* ---- Controls ---- */
+.deck-controls {
+  display: flex;
+  gap: var(--space-4);
+  justify-content: center;
+  margin-top: var(--space-6);
+}
+
+.deck-controls button {
+  flex: 1;
+  max-width: 12rem;
+  min-height: var(--touch-min);
+}
+
+.deck-controls button:focus-visible {
+  outline: var(--focus-width) solid var(--color-focus-ring);
+  outline-offset: var(--focus-offset);
+}
+
+.deck-hint {
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+  text-align: center;
+  margin: var(--space-4) 0 0;
+}
+
+.deck-hint kbd {
+  background-color: var(--color-bg-raised);
+  border: 1px solid var(--color-border-medium);
+  border-radius: var(--radius-sm);
+  padding: var(--space-0) var(--space-1);
+  font-family: var(--font-sans);
+  font-size: var(--text-xs);
+}
+
+/* ---- Match celebration overlay ---- */
+.match-overlay {
+  position: fixed;
+  inset: 0;
+  background-color: color-mix(in srgb, var(--color-bg) 70%, transparent);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: var(--space-4);
+  z-index: 50;
+}
+
+.match-dialog {
+  background-color: var(--color-bg-card);
+  border: 1px solid var(--color-border-medium);
+  border-radius: var(--radius-lg);
+  padding: var(--space-8);
+  max-width: 24rem;
+  width: 100%;
+  text-align: center;
+  box-shadow: var(--shadow-accent-lift);
+}
+
+.match-dialog:focus-visible {
+  outline: var(--focus-width) solid var(--color-focus-ring);
+  outline-offset: var(--focus-offset);
+}
+
+.match-title {
+  font-size: var(--text-3xl);
+  line-height: var(--leading-tight);
+  color: var(--color-text);
+  margin: var(--space-4) 0 var(--space-2);
+}
+
+.match-lead {
+  color: var(--color-text-secondary);
+  line-height: var(--leading-normal);
+  margin: 0;
+}
+
+.match-actions {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  margin-top: var(--space-6);
+}
+
+.match-actions button {
+  min-height: var(--touch-min);
+}
+
+.match-actions button:focus-visible {
+  outline: var(--focus-width) solid var(--color-focus-ring);
+  outline-offset: var(--focus-offset);
+}
+
+/* ---- Passed profiles review ---- */
+.pass-review-list {
+  list-style: none;
+  margin: 0 0 var(--space-6);
+  padding: 0;
+}
+
+.pass-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  padding: var(--space-3) 0;
+  border-bottom: 1px solid var(--color-border-subtle);
+}
+
+.pass-row-info {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  color: var(--color-text);
+  font-size: var(--text-base);
+}
+
+.pass-review-back {
+  margin-top: var(--space-6);
+  display: flex;
+  justify-content: center;
+}
+
+.pass-review-back button {
+  min-height: var(--touch-min);
+}
+
+.btn-text {
+  min-height: var(--touch-min);
+  min-width: var(--touch-min);
+  padding: var(--space-2) var(--space-4);
+  background: none;
+  border: 0;
+  border-radius: var(--radius-sm);
+  color: var(--color-accent-text);
+  font-size: var(--text-sm);
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.btn-text:hover {
+  color: var(--color-accent-hover);
+}
+
+.btn-text:focus-visible {
+  outline: var(--focus-width) solid var(--color-focus-ring);
+  outline-offset: var(--focus-offset);
+}
+
+/* ---- Screen-reader-only utility ---- */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .deck-card,
+  .match-dialog {
+    box-shadow: none;
+  }
+}
