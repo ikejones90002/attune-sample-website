@@ -1,5 +1,14 @@
 // Fictional sample data for the prototype — no real people.
+// Photos are AI-generated portraits of fictional people.
 import type { SampleProfile } from '../lib/types';
+import mayaPhoto from '../assets/profiles/maya-r.jpg';
+import devonPhoto from '../assets/profiles/devon-k.jpg';
+import priyaPhoto from '../assets/profiles/priya-s.jpg';
+import marcusPhoto from '../assets/profiles/marcus-t.jpg';
+import elenaPhoto from '../assets/profiles/elena-v.jpg';
+import jordanPhoto from '../assets/profiles/jordan-a.jpg';
+import sofiaPhoto from '../assets/profiles/sofia-m.jpg';
+import alexPhoto from '../assets/profiles/alex-c.jpg';
 
 export const SAMPLE_PROFILES: SampleProfile[] = [
   {
@@ -13,6 +22,7 @@ export const SAMPLE_PROFILES: SampleProfile[] = [
     communication: ['ASL', 'Video chat', 'Text'],
     access: ['Deaf'],
     gradient: ['#4c1d95', '#7c3aed'],
+    photo: mayaPhoto,
     likesMeBack: true,
   },
   {
@@ -26,6 +36,7 @@ export const SAMPLE_PROFILES: SampleProfile[] = [
     communication: ['Lip reading (in person)', 'Captions', 'Text'],
     access: ['Hard of hearing'],
     gradient: ['#7c2d12', '#c2410c'],
+    photo: devonPhoto,
     likesMeBack: false,
   },
   {
@@ -39,6 +50,7 @@ export const SAMPLE_PROFILES: SampleProfile[] = [
     communication: ['Voice calls', 'Screen reader–friendly text', 'Audio messages'],
     access: ['Blind'],
     gradient: ['#0c4a6e', '#0284c7'],
+    photo: priyaPhoto,
     likesMeBack: false,
   },
   {
@@ -52,6 +64,7 @@ export const SAMPLE_PROFILES: SampleProfile[] = [
     communication: ['Text (large text friendly)', 'Video chat', 'Voice notes'],
     access: ['Low vision'],
     gradient: ['#14532d', '#16a34a'],
+    photo: marcusPhoto,
     likesMeBack: true,
   },
   {
@@ -65,6 +78,7 @@ export const SAMPLE_PROFILES: SampleProfile[] = [
     communication: ['ASL', 'BSL', 'Video chat', 'Text'],
     access: ['Deaf'],
     gradient: ['#831843', '#db2777'],
+    photo: elenaPhoto,
     likesMeBack: false,
   },
   {
@@ -78,6 +92,7 @@ export const SAMPLE_PROFILES: SampleProfile[] = [
     communication: ['Text', 'Video chat', 'In person'],
     access: [],
     gradient: ['#1e3a8a', '#2563eb'],
+    photo: jordanPhoto,
     likesMeBack: false,
   },
   {
@@ -91,6 +106,7 @@ export const SAMPLE_PROFILES: SampleProfile[] = [
     communication: ['Captions', 'Text', 'Video chat with captions'],
     access: ['Hard of hearing'],
     gradient: ['#713f12', '#ca8a04'],
+    photo: sofiaPhoto,
     likesMeBack: true,
   },
   {
@@ -104,6 +120,7 @@ export const SAMPLE_PROFILES: SampleProfile[] = [
     communication: ['Voice calls', 'Audio messages', 'Text'],
     access: ['Blind'],
     gradient: ['#3b0764', '#a855f7'],
+    photo: alexPhoto,
     likesMeBack: false,
   },
 ];

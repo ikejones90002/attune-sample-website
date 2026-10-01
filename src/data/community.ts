@@ -28,6 +28,8 @@ export interface CommunityEvent {
   location: string;
   description: string;
   access: string[];
+  /** Fictional demo attendee count — part of the sample content. */
+  attendeeCount: number;
 }
 
 export interface CommunityResource {
@@ -231,6 +233,7 @@ export const COMMUNITY_EVENTS: CommunityEvent[] = [
     location: 'Culver City Community Center, Culver City',
     description: 'A relaxed evening social for Deaf and HoH singles and friends — coffee, board games, and new faces. Come as you are.',
     access: ['ASL interpreters', 'Wheelchair accessible', 'Well-lit space'],
+    attendeeCount: 18,
   },
   {
     id: 'event-tactile-art',
@@ -239,6 +242,7 @@ export const COMMUNITY_EVENTS: CommunityEvent[] = [
     location: 'Pasadena Art Museum, Pasadena',
     description: 'Guided small-group tour of the sculpture garden with touch access and detailed audio descriptions. Great low-pressure date outing.',
     access: ['Audio description', 'Touch tours', 'Sighted guides available', 'Wheelchair accessible'],
+    attendeeCount: 12,
   },
   {
     id: 'event-asl-speed',
@@ -247,6 +251,7 @@ export const COMMUNITY_EVENTS: CommunityEvent[] = [
     location: 'The Virgil, East Hollywood',
     description: 'Five-minute rounds of conversation — signing strongly encouraged, all levels welcome. A fun way to meet other Attune members in person.',
     access: ['ASL interpreters', 'Beginner-friendly signing tables'],
+    attendeeCount: 24,
   },
   {
     id: 'event-sensory-hike',
@@ -255,6 +260,7 @@ export const COMMUNITY_EVENTS: CommunityEvent[] = [
     location: 'Griffith Park, Los Angeles',
     description: 'A slow-paced morning hike designed for blind, low-vision, and Deaf hikers, with volunteer guides and a rest-stop breakfast.',
     access: ['Sighted guides available', 'ASL interpreters', 'Quiet rest stops', 'Service animals welcome'],
+    attendeeCount: 15,
   },
 ];
 
