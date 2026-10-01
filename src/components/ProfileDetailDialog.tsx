@@ -46,7 +46,7 @@ export function ProfileDetailDialog({
         onClick={(event) => event.stopPropagation()}
       >
         <div className="modal-profile-head">
-          <Avatar name={profile.name} gradient={profile.gradient} size={72} />
+          <Avatar name={profile.name} gradient={profile.gradient} photo={profile.photo} size={72} />
           <div>
             <h2 id={`detail-title-${profile.id}`} className="modal-title">
               {profile.name}, {profile.age}

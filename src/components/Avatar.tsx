@@ -1,10 +1,12 @@
 export function Avatar({
   name,
   gradient,
+  photo,
   size = 64,
 }: {
   name: string;
   gradient: [string, string];
+  photo?: string;
   size?: number;
 }) {
   const initials = name
@@ -18,15 +20,30 @@ export function Avatar({
     <div
       className="avatar"
       role="img"
-      aria-label={`${name}'s avatar`}
+      aria-label={`${name}'s photo`}
       style={{
         background: `linear-gradient(135deg, ${gradient[0]}, ${gradient[1]})`,
         width: `${size}px`,
         height: `${size}px`,
         fontSize: `${size * 0.38}px`,
+        overflow: "hidden",
       }}
     >
-      {initials}
+      {photo ? (
+        <img
+          src={photo}
+          alt=""
+          draggable={false}
+          style={{
+            width: "100%",
+            height: "100%",
+            objectFit: "cover",
+            display: "block",
+          }}
+        />
+      ) : (
+        initials
+      )}
     </div>
   );
 }
