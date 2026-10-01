@@ -3,6 +3,7 @@ import { useState } from 'react';
 import './App.css';
 import { Logo } from './components/Logo';
 import { ThemeToggle } from './components/ThemeToggle';
+import { AttuneApiProvider } from './lib/api/AttuneApiProvider';
 import Home from './pages/Home';
 import Features from './pages/Features';
 import About from './pages/About';
@@ -117,7 +118,9 @@ function App() {
 function AppWrapper() {
   return (
     <Router basename="/attune-sample-website">
-      <App />
+      <AttuneApiProvider>
+        <App />
+      </AttuneApiProvider>
     </Router>
   );
 }
