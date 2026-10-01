@@ -20,6 +20,8 @@ export interface AttuneStore {
   eventRsvps: string[];
   /** Community resource ids the user saved (additive, defaults to []). */
   savedResourceIds: string[];
+  /** Whether the simulated (demo-only) ID-verification flow was completed (additive, defaults to false). */
+  idVerified: boolean;
 }
 
 export interface AttuneActions {
@@ -35,6 +37,7 @@ export interface AttuneActions {
   unblockProfile(id: string): void;
   toggleEventRsvp(id: string): void;
   toggleSavedResource(id: string): void;
+  setIdVerified(verified: boolean): void;
   sendMessage(threadId: string, text: string, from?: 'me' | 'them'): void;
   resetDemo(): void;
 }
@@ -50,6 +53,7 @@ const INITIAL_STORE: AttuneStore = {
   blockedIds: [],
   eventRsvps: [],
   savedResourceIds: [],
+  idVerified: false,
 };
 
 function stringArray(value: unknown): string[] {
@@ -74,7 +78,7 @@ function isValidStore(value: unknown): value is AttuneStore {
     return false;
   }
   const v = value as Record<string, unknown>;
-  // hiddenIds / reportedIds were added later — old stored state stays valid.
+  // hiddenIds / reportedIds / idVerified were added later — old stored state stays valid.
   return (
     (v.profile === null || typeof v.profile === 'object') &&
     Array.isArray(v.likes) &&
@@ -106,6 +110,7 @@ export function loadStore(): AttuneStore {
       blockedIds: stringArray(parsed.blockedIds),
       eventRsvps: stringArray(parsed.eventRsvps),
       savedResourceIds: stringArray(parsed.savedResourceIds),
+      idVerified: parsed.idVerified === true,
     };
   } catch {
     return { ...INITIAL_STORE };
@@ -218,6 +223,10 @@ export function useAttuneStore(): [AttuneStore, AttuneActions] {
       });
     },
 
+    setIdVerified: (verified: boolean): void => {
+      update({ ...state, idVerified: verified });
+    },
+
     sendMessage: (threadId: string, text: string, from: 'me' | 'them' = 'me'): void => {
       const trimmed = text.trim();
       if (trimmed.length === 0) {
@@ -248,6 +257,7 @@ export function useAttuneStore(): [AttuneStore, AttuneActions] {
         blockedIds: [],
         eventRsvps: [],
         savedResourceIds: [],
+        idVerified: false,
       });
     },
   };
