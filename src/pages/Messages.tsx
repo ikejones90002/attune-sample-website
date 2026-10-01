@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import type { FormEvent } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import { Avatar } from '../components/Avatar';
@@ -7,6 +7,15 @@ import { EmptyState } from '../components/EmptyState';
 import { SAMPLE_PROFILES } from '../data/profiles';
 import { SAMPLE_REPLIES } from '../data/replies';
 import { loadStore, useAttuneStore } from '../lib/store';
+import {
+  createDictation,
+  dictationErrorNote,
+  isDictationSupported,
+  isReadAloudSupported,
+  speakText,
+  stopSpeaking,
+} from '../lib/voice';
+import type { VoiceRecognition } from '../lib/voice';
 import type { ChatMessage, SampleProfile } from '../lib/types';
 import './Messages.css';
 
@@ -74,6 +83,87 @@ function ThreadView({ threadId }: { threadId: string }) {
   const listRef = useRef<HTMLDivElement>(null);
   const replyTimer = useRef<number | undefined>(undefined);
 
+  // Voice input (dictation) and read-aloud are feature-detected; the
+  // controls are hidden when the browser does not support them.
+  const dictationSupported = useMemo(() => isDictationSupported(), []);
+  const readAloudSupported = useMemo(() => isReadAloudSupported(), []);
+  const [listening, setListening] = useState(false);
+  const [dictationNote, setDictationNote] = useState<string | null>(null);
+  const recognitionRef = useRef<VoiceRecognition | null>(null);
+  const draftBaseRef = useRef('');
+
+  function stopDictation() {
+    recognitionRef.current?.stop();
+    recognitionRef.current = null;
+    setListening(false);
+  }
+
+  function startDictation() {
+    const recognition = createDictation();
+    if (recognition === null) {
+      setDictationNote('Voice input is not available in this browser — typing works the same.');
+      return;
+    }
+    stopDictation();
+    recognitionRef.current = recognition;
+    recognition.continuous = false;
+    recognition.interimResults = true;
+    recognition.lang = navigator.language || 'en-US';
+    draftBaseRef.current = draft.trim();
+    let finalTranscript = '';
+    recognition.onresult = (event) => {
+      let interimTranscript = '';
+      for (let i = event.resultIndex; i < event.results.length; i += 1) {
+        const result = event.results[i];
+        const alternative = result.item(0);
+        const transcript = alternative === undefined ? '' : alternative.transcript;
+        if (result.isFinal) {
+          finalTranscript += transcript;
+        } else {
+          interimTranscript += transcript;
+        }
+      }
+      const combined = `${finalTranscript}${interimTranscript}`.trim();
+      const base = draftBaseRef.current;
+      let next: string;
+      if (combined === '') {
+        next = base;
+      } else if (base === '') {
+        next = combined;
+      } else {
+        next = `${base} ${combined}`;
+      }
+      setDraft(next);
+    };
+    recognition.onerror = (event) => {
+      setDictationNote(dictationErrorNote(event.error));
+      recognitionRef.current = null;
+      setListening(false);
+    };
+    recognition.onend = () => {
+      recognitionRef.current = null;
+      setListening(false);
+    };
+    try {
+      recognition.start();
+    } catch {
+      setDictationNote('Voice input could not start — typing works the same.');
+      recognitionRef.current = null;
+      return;
+    }
+    setDictationNote(null);
+    setListening(true);
+  }
+
+  // Stop any active dictation or speech when leaving the thread.
+  useEffect(() => {
+    return () => {
+      recognitionRef.current?.stop();
+      recognitionRef.current = null;
+      stopSpeaking();
+    };
+  }, [threadId]);
+
   const messages = state.messages[threadId] ?? [];
 
   useEffect(() => {
@@ -107,6 +197,7 @@ function ThreadView({ threadId }: { threadId: string }) {
     event.preventDefault();
     const trimmed = draft.trim();
     if (trimmed === '') return;
+    stopDictation();
     actions.sendMessage(threadId, trimmed, 'me');
     setDraft('');
     window.clearTimeout(replyTimer.current);
@@ -148,7 +239,19 @@ function ThreadView({ threadId }: { threadId: string }) {
                 <span className="visually-hidden">
                   {message.from === 'me' ? 'You said' : `${profile.name} said`}:
                 </span>
-                <span>{message.text}</span>
+                <span className="msg-body">
+                  <span>{message.text}</span>
+                  {message.from === 'them' && readAloudSupported && (
+                    <button
+                      type="button"
+                      className="msg-speak"
+                      aria-label={`Read ${profile.name}’s message aloud`}
+                      onClick={() => speakText(message.text)}
+                    >
+                      <span aria-hidden="true">🔊</span>
+                    </button>
+                  )}
+                </span>
                 <time className="msg-time" dateTime={message.at}>
                   {formatTime(message.at)}
                 </time>
@@ -165,10 +268,30 @@ function ThreadView({ threadId }: { threadId: string }) {
           aria-label={`Message ${profile.name}`}
           placeholder={`Message ${profile.name}…`}
         />
+        {dictationSupported && (
+          <button
+            type="button"
+            className={`dictation-button ${listening ? 'btn-primary' : 'btn-secondary'}`}
+            aria-pressed={listening}
+            aria-label={
+              listening
+                ? 'Stop voice input'
+                : `Dictate a message to ${profile.name} using your microphone`
+            }
+            onClick={listening ? stopDictation : startDictation}
+          >
+            <span aria-hidden="true">{listening ? '■' : '🎙'}</span>
+          </button>
+        )}
         <button type="submit" className="btn-primary">
           Send
         </button>
       </form>
+      {dictationNote !== null && (
+        <p className="dictation-note" role="status">
+          {dictationNote}
+        </p>
+      )}
     </div>
   );
 }
