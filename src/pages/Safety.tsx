@@ -2,11 +2,11 @@ import { useState } from 'react';
 import { DemoNote } from '../components/DemoNote';
 import { VerifiedBadge } from '../components/VerifiedBadge';
 import { VerificationDialog } from '../components/VerificationDialog';
-import { useAttuneStore } from '../lib/store';
+import { useAttune } from '../lib/api/AttuneApiProvider';
 import './Safety.css';
 
 export function Safety() {
-  const [state, actions] = useAttuneStore();
+  const [state, api] = useAttune();
   const [verificationOpen, setVerificationOpen] = useState(false);
 
   return (
@@ -56,7 +56,9 @@ export function Safety() {
               <button
                 type="button"
                 className="btn-secondary"
-                onClick={() => actions.setIdVerified(false)}
+                onClick={() => {
+                  void api.setIdVerified(false);
+                }}
               >
                 Remove demo verification
               </button>
@@ -108,7 +110,9 @@ export function Safety() {
         <VerificationDialog
           selfName={state.profile?.name ?? ''}
           onClose={() => setVerificationOpen(false)}
-          onComplete={() => actions.setIdVerified(true)}
+          onComplete={() => {
+            void api.setIdVerified(true);
+          }}
         />
       )}
     </div>

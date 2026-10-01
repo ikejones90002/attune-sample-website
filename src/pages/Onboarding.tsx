@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useAttuneStore } from '../lib/store';
+import { useAttune } from '../lib/api/AttuneApiProvider';
 import type {
   AccessibilityNeeds,
   CommunicationPrefs,
@@ -120,7 +120,7 @@ function parseInterests(value: string): string[] {
 
 function Onboarding() {
   const navigate = useNavigate();
-  const [, { saveProfile }] = useAttuneStore();
+  const [, { saveProfile }] = useAttune();
   const [currentStep, setCurrentStep] = useState<OnboardingStep>('welcome');
   const [profile, setProfile] = useState<UserProfile>(INITIAL_PROFILE);
   const [interestsInput, setInterestsInput] = useState('');
@@ -188,7 +188,7 @@ function Onboarding() {
   useEffect(() => {
     if (currentStep === 'complete' && savedStepRef.current !== 'complete') {
       savedStepRef.current = 'complete';
-      saveProfile({ ...profile, onboardingComplete: true });
+      void saveProfile({ ...profile, onboardingComplete: true });
     } else if (currentStep !== 'complete') {
       savedStepRef.current = '';
     }

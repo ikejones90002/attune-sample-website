@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import type { FormEvent } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { useAttuneStore } from '../lib/store';
+import { useAttune } from '../lib/api/AttuneApiProvider';
 import { SAMPLE_PROFILES } from '../data/profiles';
 import type { MatchingPrefs, SampleProfile, UserProfile } from '../lib/types';
 import { ThemeToggle } from '../components/ThemeToggle';
@@ -27,7 +27,7 @@ function defaultPrefs(): MatchingPrefs {
 }
 
 function MatchingPrefsForm({ profile }: { profile: UserProfile }) {
-  const [, actions] = useAttuneStore();
+  const [, api] = useAttune();
   const [edits, setEdits] = useState<MatchingPrefs>(() => ({
     ...(profile.matchingPrefs ?? defaultPrefs()),
   }));
@@ -65,7 +65,7 @@ function MatchingPrefsForm({ profile }: { profile: UserProfile }) {
       setSaved(false);
       return;
     }
-    actions.saveProfile({ ...profile, matchingPrefs: edits });
+    void api.saveProfile({ ...profile, matchingPrefs: edits });
     setSaved(true);
   }
 
@@ -219,7 +219,7 @@ function ManagedProfileList({
 }
 
 export function Settings() {
-  const [state, actions] = useAttuneStore();
+  const [state, api] = useAttune();
   const navigate = useNavigate();
 
   function handleReset(): void {
@@ -228,7 +228,7 @@ export function Settings() {
         'Reset all Attune demo data? Your profile, likes, matches, and messages will be cleared.',
       )
     ) {
-      actions.resetDemo();
+      void api.resetDemo();
       window.location.reload();
     }
   }
@@ -270,7 +270,7 @@ export function Settings() {
         emptyText="You haven't hidden any profiles. Profiles you hide from Discover will show up here so you can bring them back."
         actionLabel="Unhide"
         actionVerb="Unhide"
-        onAction={actions.unhideProfile}
+        onAction={api.unhideProfile}
       />
 
       <ManagedProfileList
@@ -280,7 +280,7 @@ export function Settings() {
         emptyText="You haven't blocked any profiles. Blocking from Matches removes someone here, where you can undo it."
         actionLabel="Unblock"
         actionVerb="Unblock"
-        onAction={actions.unblockProfile}
+        onAction={api.unblockProfile}
       />
 
       <section className="card settings-card" aria-labelledby="settings-account">

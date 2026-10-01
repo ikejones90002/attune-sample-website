@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import type { KeyboardEvent as ReactKeyboardEvent } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useAttuneStore } from '../lib/store';
+import { useAttune } from '../lib/api/AttuneApiProvider';
 import { computeCompatibility } from '../lib/compatibility';
 import { SAMPLE_PROFILES } from '../data/profiles';
 import type { SampleProfile } from '../lib/types';
@@ -15,7 +15,7 @@ const DEFAULT_PREFS = { ageMin: 18, ageMax: 99, maxDistanceMi: 100 };
 
 export function Discover() {
   const navigate = useNavigate();
-  const [state, { like, pass, unpass, hideProfile, reportProfile }] = useAttuneStore();
+  const [state, { like, pass, unpass, hideProfile, reportProfile }] = useAttune();
   const [index, setIndex] = useState(0);
   const [matchedId, setMatchedId] = useState<string | null>(null);
   const [reviewingPasses, setReviewingPasses] = useState(false);
@@ -81,7 +81,7 @@ export function Discover() {
 
   const handleHide = useCallback(() => {
     if (!current) return;
-    hideProfile(current.id);
+    void hideProfile(current.id);
     setMenuOpen(false);
     // The menu button stays in place for the next profile — keep focus there.
     menuButtonRef.current?.focus();
@@ -131,16 +131,17 @@ export function Discover() {
     return () => document.removeEventListener('mousedown', onPointerDown);
   }, [menuOpen]);
 
-  const handleLike = useCallback(() => {
+  const handleLike = useCallback(async () => {
     if (!current) return;
-    if (like(current.id)) {
+    const { matched } = await like(current.id);
+    if (matched) {
       setMatchedId(current.id);
     }
   }, [current, like]);
 
   const handlePass = useCallback(() => {
     if (!current) return;
-    pass(current.id);
+    void pass(current.id);
   }, [current, pass]);
 
   useEffect(() => {
@@ -154,10 +155,10 @@ export function Discover() {
       if (tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT') return;
       if (e.key === 'ArrowRight') {
         e.preventDefault();
-        handleLike();
+        void handleLike();
       } else if (e.key === 'ArrowLeft') {
         e.preventDefault();
-        handlePass();
+        void handlePass();
       }
     };
     window.addEventListener('keydown', onKeyDown);
@@ -211,7 +212,9 @@ export function Discover() {
                   <button
                     type="button"
                     className="btn-text"
-                    onClick={() => unpass(p.id)}
+                    onClick={() => {
+                      void unpass(p.id);
+                    }}
                     aria-label={`Undo pass on ${p.name}`}
                   >
                     Undo

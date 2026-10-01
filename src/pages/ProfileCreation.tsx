@@ -1,7 +1,7 @@
 import { useState, useRef } from 'react';
 import '../App.css';
 import { VerifiedBadge } from '../components/VerifiedBadge';
-import { useAttuneStore } from '../lib/store';
+import { useAttune } from '../lib/api/AttuneApiProvider';
 import type {
   AccessibilityNeeds,
   CommunicationPrefs,
@@ -46,7 +46,7 @@ const DEFAULT_MATCHING_PREFS: MatchingPrefs = {
 };
 
 export default function ProfileCreation() {
-  const [storeState, actions] = useAttuneStore();
+  const [storeState, api] = useAttune();
   const existingProfile = storeState.profile;
   const isEditMode = existingProfile !== null;
 
@@ -223,7 +223,7 @@ export default function ProfileCreation() {
       matchingPrefs: existingProfile?.matchingPrefs ?? { ...DEFAULT_MATCHING_PREFS },
       onboardingComplete: true,
     };
-    actions.saveProfile(profileToSave);
+    void api.saveProfile(profileToSave);
     alert(
       isEditMode
         ? 'Profile updated successfully!'

@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import type { FormEvent } from 'react';
 import { DemoNote } from '../components/DemoNote';
-import { useAttuneStore } from '../lib/store';
+import { useAttune } from '../lib/api/AttuneApiProvider';
 import {
   COMMUNITY_EVENTS,
   COMMUNITY_RESOURCES,
@@ -218,7 +218,7 @@ export function Community() {
   const [localReplies, setLocalReplies] = useState<Record<string, ThreadReply[]>>({});
   const [reportThreadId, setReportThreadId] = useState<string | null>(null);
   const [savedOnly, setSavedOnly] = useState(false);
-  const [store, storeActions] = useAttuneStore();
+  const [store, api] = useAttune();
 
   const visibleThreads = COMMUNITY_THREADS.filter(
     (thread) => selectedSpace === 'all' || thread.spaceId === selectedSpace,
@@ -339,7 +339,9 @@ export function Community() {
                   type="button"
                   className="btn-secondary event-rsvp-btn"
                   aria-pressed={interested}
-                  onClick={() => storeActions.toggleEventRsvp(event.id)}
+                  onClick={() => {
+                    void api.toggleEventRsvp(event.id);
+                  }}
                   aria-label={`${interested ? 'Remove RSVP from' : 'RSVP to'} ${event.title}`}
                 >
                   {interested ? "You're interested ✓" : "I'm interested"}
@@ -392,7 +394,9 @@ export function Community() {
                     type="button"
                     className="btn-secondary resource-save-btn"
                     aria-pressed={saved}
-                    onClick={() => storeActions.toggleSavedResource(resource.id)}
+                    onClick={() => {
+                      void api.toggleSavedResource(resource.id);
+                    }}
                     aria-label={`${saved ? 'Remove' : 'Save'} resource: ${resource.title}`}
                   >
                     {saved ? 'Saved ✓' : 'Save'}

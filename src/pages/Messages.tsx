@@ -7,7 +7,7 @@ import { EmptyState } from '../components/EmptyState';
 import { VideoCallDialog } from '../components/VideoCallDialog';
 import { SAMPLE_PROFILES } from '../data/profiles';
 import { SAMPLE_REPLIES } from '../data/replies';
-import { loadStore, useAttuneStore } from '../lib/store';
+import { useAttune } from '../lib/api/AttuneApiProvider';
 import {
   createDictation,
   dictationErrorNote,
@@ -32,7 +32,7 @@ function formatTime(iso: string): string {
 }
 
 function ThreadList() {
-  const [state] = useAttuneStore();
+  const [state] = useAttune();
   const navigate = useNavigate();
 
   const threads = state.matches
@@ -78,7 +78,7 @@ function ThreadList() {
 }
 
 function ThreadView({ threadId }: { threadId: string }) {
-  const [state, actions] = useAttuneStore();
+  const [state, api] = useAttune();
   const profile = SAMPLE_PROFILES.find((p) => p.id === threadId);
   const [draft, setDraft] = useState('');
   const [callOpen, setCallOpen] = useState(false);
@@ -200,15 +200,15 @@ function ThreadView({ threadId }: { threadId: string }) {
     const trimmed = draft.trim();
     if (trimmed === '') return;
     stopDictation();
-    actions.sendMessage(threadId, trimmed, 'me');
+    void api.sendMessage(threadId, trimmed, 'me');
     setDraft('');
     window.clearTimeout(replyTimer.current);
-    replyTimer.current = window.setTimeout(() => {
+    replyTimer.current = window.setTimeout(async () => {
       const bank = SAMPLE_REPLIES[threadId] ?? [];
       if (bank.length === 0) return;
-      const fresh = loadStore();
+      const fresh = await api.getState();
       const theirCount = (fresh.messages[threadId] ?? []).filter((m) => m.from === 'them').length;
-      actions.sendMessage(threadId, bank[theirCount % bank.length], 'them');
+      await api.sendMessage(threadId, bank[theirCount % bank.length], 'them');
     }, 1200);
   }
 

@@ -1,6 +1,6 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
-import { useAttuneStore } from '../lib/store';
+import { useAttune } from '../lib/api/AttuneApiProvider';
 import { SAMPLE_PROFILES } from '../data/profiles';
 import type { SampleProfile } from '../lib/types';
 import { Avatar } from '../components/Avatar';
@@ -93,7 +93,7 @@ function MatchConfirmDialog({ profile, action, onConfirm, onCancel }: ConfirmDia
 
 export function Matches() {
   const navigate = useNavigate();
-  const [state, actions] = useAttuneStore();
+  const [state, api] = useAttune();
   const [confirm, setConfirm] = useState<{ profile: SampleProfile; action: ConfirmAction } | null>(
     null,
   );
@@ -112,9 +112,9 @@ export function Matches() {
   function handleConfirm(): void {
     if (confirm === null) return;
     if (confirm.action === 'block') {
-      actions.blockProfile(confirm.profile.id);
+      void api.blockProfile(confirm.profile.id);
     } else {
-      actions.unmatchProfile(confirm.profile.id);
+      void api.unmatchProfile(confirm.profile.id);
     }
     setConfirm(null);
   }
