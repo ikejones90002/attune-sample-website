@@ -1,5 +1,6 @@
 import { useState, useRef } from 'react';
 import '../App.css';
+import { VerifiedBadge } from '../components/VerifiedBadge';
 import { useAttuneStore } from '../lib/store';
 import type {
   AccessibilityNeeds,
@@ -395,6 +396,11 @@ export default function ProfileCreation() {
 
             <div className="profile-summary">
               <h3>{form.name}</h3>
+              {storeState.idVerified && (
+                <p>
+                  <VerifiedBadge />
+                </p>
+              )}
               <p>Age: {form.age}</p>
               <p>Bio: {form.bio}</p>
               <p>Photos: {form.photos.length} uploaded</p>

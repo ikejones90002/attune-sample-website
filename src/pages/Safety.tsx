@@ -1,7 +1,14 @@
+import { useState } from 'react';
 import { DemoNote } from '../components/DemoNote';
+import { VerifiedBadge } from '../components/VerifiedBadge';
+import { VerificationDialog } from '../components/VerificationDialog';
+import { useAttuneStore } from '../lib/store';
 import './Safety.css';
 
 export function Safety() {
+  const [state, actions] = useAttuneStore();
+  const [verificationOpen, setVerificationOpen] = useState(false);
+
   return (
     <div className="safety-page">
       <header className="page-header">
@@ -34,10 +41,52 @@ export function Safety() {
 
       <section className="card safety-card" aria-labelledby="safety-verification">
         <h2 className="section-heading" id="safety-verification">Verification</h2>
-        <p>
-          ID verification isn&apos;t available in this prototype yet. Every profile you see here is
-          fictional sample data, so there&apos;s nothing to verify — but treat real-world profiles
-          with care: video-chat before meeting, and never send money.
+        {state.idVerified ? (
+          <>
+            <p className="safety-verified-row">
+              <VerifiedBadge />
+            </p>
+            <p>
+              Your demo verification is complete. This badge is simulated — no document was
+              checked — and your verified status is stored only in this browser. In production,
+              verification would be confirmed by a provider such as Persona or Veriff before a
+              badge like this appears.
+            </p>
+            <p className="safety-verified-action">
+              <button
+                type="button"
+                className="btn-secondary"
+                onClick={() => actions.setIdVerified(false)}
+              >
+                Remove demo verification
+              </button>
+            </p>
+          </>
+        ) : (
+          <>
+            <p>
+              Every profile you see in this prototype is fictional sample data, so there&apos;s no
+              real identity behind them to verify. In a production app, ID verification confirms a
+              real person is behind a profile — one of the strongest trust signals there is.
+            </p>
+            <p>
+              Try the simulated flow to see how it would feel. It&apos;s a demo: no document is
+              uploaded or checked, and nothing leaves your browser.
+            </p>
+            <p className="safety-verified-action">
+              <button
+                type="button"
+                className="btn-primary"
+                onClick={() => setVerificationOpen(true)}
+              >
+                Start ID verification (demo)
+              </button>
+            </p>
+          </>
+        )}
+        <p className="safety-caution">
+          Verified or not, real-world caution still applies: video-chat before meeting in person,
+          and never send money to someone you haven&apos;t met.
         </p>
       </section>
 
@@ -54,6 +103,14 @@ export function Safety() {
       </section>
 
       <DemoNote text="Demo preview — safety features in this prototype are simulated locally; nothing leaves your browser." />
+
+      {verificationOpen && (
+        <VerificationDialog
+          selfName={state.profile?.name ?? ''}
+          onClose={() => setVerificationOpen(false)}
+          onComplete={() => actions.setIdVerified(true)}
+        />
+      )}
     </div>
   );
 }

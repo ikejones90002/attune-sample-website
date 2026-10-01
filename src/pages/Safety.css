@@ -21,6 +21,19 @@
   color: var(--color-accent-text);
 }
 
+.safety-verified-row {
+  margin-bottom: var(--space-3);
+}
+
+.safety-verified-action {
+  margin-top: var(--space-3);
+}
+
+.safety-caution {
+  margin-top: var(--space-4);
+  color: var(--color-text-secondary);
+}
+
 .help-box {
   background: var(--color-bg-overlay);
   border: 1px solid var(--color-border-medium);
