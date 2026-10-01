@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import type { FormEvent } from 'react';
 import { DemoNote } from '../components/DemoNote';
+import { useAttuneStore } from '../lib/store';
 import {
   COMMUNITY_EVENTS,
   COMMUNITY_RESOURCES,
@@ -216,12 +217,17 @@ export function Community() {
   const [openThreadId, setOpenThreadId] = useState<string | null>(null);
   const [localReplies, setLocalReplies] = useState<Record<string, ThreadReply[]>>({});
   const [reportThreadId, setReportThreadId] = useState<string | null>(null);
+  const [savedOnly, setSavedOnly] = useState(false);
+  const [store, storeActions] = useAttuneStore();
 
   const visibleThreads = COMMUNITY_THREADS.filter(
     (thread) => selectedSpace === 'all' || thread.spaceId === selectedSpace,
   );
   const openThread = COMMUNITY_THREADS.find((thread) => thread.id === openThreadId);
   const reportThread = COMMUNITY_THREADS.find((thread) => thread.id === reportThreadId);
+  const visibleResources = COMMUNITY_RESOURCES.filter(
+    (resource) => !savedOnly || store.savedResourceIds.includes(resource.id),
+  );
 
   function handlePostReply(threadId: string, reply: ThreadReply) {
     setLocalReplies((prev) => ({
@@ -311,37 +317,92 @@ export function Community() {
         <h2 id="events-heading" className="section-heading">
           Accessible events
         </h2>
-        {COMMUNITY_EVENTS.map((event) => (
-          <article key={event.id} className="card event-card">
-            <h3 className="thread-title">{event.title}</h3>
-            <p className="thread-meta">
-              {event.date} · {event.location}
-            </p>
-            <p>{event.description}</p>
-            <ul className="badge-list">
-              {event.access.map((item) => (
-                <li key={item}>
-                  <span className="badge badge-muted">{item}</span>
-                </li>
-              ))}
-            </ul>
-          </article>
-        ))}
+        {COMMUNITY_EVENTS.map((event) => {
+          const interested = store.eventRsvps.includes(event.id);
+          const displayedCount = event.attendeeCount + (interested ? 1 : 0);
+          return (
+            <article key={event.id} className="card event-card">
+              <h3 className="thread-title">{event.title}</h3>
+              <p className="thread-meta">
+                {event.date} · {event.location}
+              </p>
+              <p>{event.description}</p>
+              <ul className="badge-list">
+                {event.access.map((item) => (
+                  <li key={item}>
+                    <span className="badge badge-muted">{item}</span>
+                  </li>
+                ))}
+              </ul>
+              <div className="event-footer">
+                <button
+                  type="button"
+                  className="btn-secondary event-rsvp-btn"
+                  aria-pressed={interested}
+                  onClick={() => storeActions.toggleEventRsvp(event.id)}
+                  aria-label={`${interested ? 'Remove RSVP from' : 'RSVP to'} ${event.title}`}
+                >
+                  {interested ? "You're interested ✓" : "I'm interested"}
+                </button>
+                <p className="thread-meta event-count">
+                  {displayedCount} interested
+                  {interested ? ' · including you (demo)' : ''}
+                </p>
+              </div>
+            </article>
+          );
+        })}
+        <DemoNote text="Demo preview — attendee counts are fictional, and your RSVP is stored only in this browser." />
       </section>
 
       <section aria-labelledby="resources-heading">
         <h2 id="resources-heading" className="section-heading">
           Resources
         </h2>
-        {COMMUNITY_RESOURCES.map((resource) => (
-          <article key={resource.id} className="card resource-card">
-            <h3 className="thread-title">{resource.title}</h3>
-            <p>
-              <span className="badge">{resource.kind}</span>
-            </p>
-            <p>{resource.description}</p>
-          </article>
-        ))}
+        <div className="chip-row" role="group" aria-label="Filter resources">
+          <button
+            type="button"
+            className="btn-secondary chip"
+            aria-pressed={savedOnly}
+            onClick={() => setSavedOnly((prev) => !prev)}
+          >
+            Saved only
+          </button>
+        </div>
+        {visibleResources.length === 0 ? (
+          <p className="thread-meta">
+            You haven&apos;t saved any resources yet. Tap Save on a resource and it will
+            appear here. Saves are stored only in this browser.
+          </p>
+        ) : (
+          visibleResources.map((resource) => {
+            const saved = store.savedResourceIds.includes(resource.id);
+            return (
+              <article key={resource.id} className="card resource-card">
+                <h3 className="thread-title">{resource.title}</h3>
+                <p>
+                  <span className="badge">{resource.kind}</span>
+                  {saved ? (
+                    <span className="badge badge-saved">Saved</span>
+                  ) : null}
+                </p>
+                <p>{resource.description}</p>
+                <div className="resource-footer">
+                  <button
+                    type="button"
+                    className="btn-secondary resource-save-btn"
+                    aria-pressed={saved}
+                    onClick={() => storeActions.toggleSavedResource(resource.id)}
+                    aria-label={`${saved ? 'Remove' : 'Save'} resource: ${resource.title}`}
+                  >
+                    {saved ? 'Saved ✓' : 'Save'}
+                  </button>
+                </div>
+              </article>
+            );
+          })
+        )}
+        <DemoNote text="Demo preview — saved resources are stored only in this browser." />
       </section>
 
       <section aria-labelledby="guidelines-heading">

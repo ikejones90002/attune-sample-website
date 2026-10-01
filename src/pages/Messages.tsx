@@ -61,7 +61,7 @@ function ThreadList() {
             return (
               <li key={profile.id}>
                 <Link to={`/messages/${profile.id}`} className="thread-row">
-                  <Avatar name={profile.name} gradient={profile.gradient} size={56} />
+                  <Avatar name={profile.name} gradient={profile.gradient} photo={profile.photo} size={56} />
                   <span className="thread-text">
                     <span className="thread-name">{profile.name}</span>
                     <span className="thread-preview">{preview}</span>
@@ -216,7 +216,7 @@ function ThreadView({ threadId }: { threadId: string }) {
         <Link to="/messages" className="back-link">
           ← All conversations
         </Link>
-        <Avatar name={profile.name} gradient={profile.gradient} size={48} />
+        <Avatar name={profile.name} gradient={profile.gradient} photo={profile.photo} size={48} />
         <h1 className="page-title">{profile.name}</h1>
       </header>
       <DemoNote text="Demo preview — conversations are simulated in your browser; nothing is sent anywhere." />

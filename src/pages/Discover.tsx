@@ -37,9 +37,18 @@ export function Discover() {
           p.distanceMi <= prefs.maxDistanceMi &&
           !state.likes.includes(p.id) &&
           !state.passes.includes(p.id) &&
-          !state.hiddenIds.includes(p.id),
+          !state.hiddenIds.includes(p.id) &&
+          !state.blockedIds.includes(p.id),
       ),
-    [prefs.ageMin, prefs.ageMax, prefs.maxDistanceMi, state.likes, state.passes, state.hiddenIds],
+    [
+      prefs.ageMin,
+      prefs.ageMax,
+      prefs.maxDistanceMi,
+      state.likes,
+      state.passes,
+      state.hiddenIds,
+      state.blockedIds,
+    ],
   );
 
   // Keep the index valid as the deck shrinks after likes/passes.
@@ -194,7 +203,7 @@ export function Discover() {
               {passedProfiles.map((p) => (
                 <li key={p.id} className="pass-row">
                   <span className="pass-row-info">
-                    <Avatar name={p.name} gradient={p.gradient} size={48} />
+                    <Avatar name={p.name} gradient={p.gradient} photo={p.photo} size={48} />
                     <span>
                       {p.name}, {p.age}
                     </span>
@@ -247,7 +256,7 @@ export function Discover() {
         <>
           <article className="deck-card" aria-labelledby={`deck-name-${current.id}`}>
             <div className="deck-avatar">
-              <Avatar name={current.name} gradient={current.gradient} size={120} />
+              <Avatar name={current.name} gradient={current.gradient} photo={current.photo} size={120} />
             </div>
             <h2 id={`deck-name-${current.id}`} className="deck-name">
               {current.name}, {current.age}
@@ -406,7 +415,7 @@ export function Discover() {
             className="match-dialog"
             onClick={(e) => e.stopPropagation()}
           >
-            <Avatar name={matchedProfile.name} gradient={matchedProfile.gradient} size={120} />
+            <Avatar name={matchedProfile.name} gradient={matchedProfile.gradient} photo={matchedProfile.photo} size={120} />
             <h2 id="match-heading" className="match-title">
               It&apos;s a match!
             </h2>

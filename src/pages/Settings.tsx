@@ -2,8 +2,10 @@ import { useState } from 'react';
 import type { FormEvent } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAttuneStore } from '../lib/store';
-import type { MatchingPrefs, UserProfile } from '../lib/types';
+import { SAMPLE_PROFILES } from '../data/profiles';
+import type { MatchingPrefs, SampleProfile, UserProfile } from '../lib/types';
 import { ThemeToggle } from '../components/ThemeToggle';
+import { Avatar } from '../components/Avatar';
 import { EmptyState } from '../components/EmptyState';
 import './Settings.css';
 
@@ -156,6 +158,66 @@ function MatchingPrefsForm({ profile }: { profile: UserProfile }) {
   );
 }
 
+interface ManagedProfileListProps {
+  ids: string[];
+  headingId: string;
+  heading: string;
+  emptyText: string;
+  actionLabel: string;
+  actionVerb: string;
+  onAction: (id: string) => void;
+}
+
+/** List of sample profiles (hidden or blocked) with a restore action. */
+function ManagedProfileList({
+  ids,
+  headingId,
+  heading,
+  emptyText,
+  actionLabel,
+  actionVerb,
+  onAction,
+}: ManagedProfileListProps) {
+  const profiles: SampleProfile[] = ids
+    .map((id) => SAMPLE_PROFILES.find((p) => p.id === id))
+    .filter((p): p is SampleProfile => p !== undefined);
+
+  return (
+    <section className="card settings-card" aria-labelledby={headingId}>
+      <h2 className="section-heading" id={headingId}>
+        {heading}
+      </h2>
+      {profiles.length === 0 ? (
+        <p className="field-note">{emptyText}</p>
+      ) : (
+        <ul className="managed-profile-list">
+          {profiles.map((p) => (
+            <li key={p.id} className="managed-profile-row">
+              <span className="managed-profile-info">
+                <Avatar name={p.name} gradient={p.gradient} photo={p.photo} size={40} />
+                <span>
+                  {p.name}, {p.age} · {p.location}
+                </span>
+              </span>
+              <button
+                type="button"
+                className="btn-secondary"
+                onClick={() => onAction(p.id)}
+                aria-label={`${actionVerb} ${p.name}`}
+              >
+                {actionLabel}
+              </button>
+            </li>
+          ))}
+        </ul>
+      )}
+      <p className="field-note">
+        Demo preview — this list is stored only in this browser; nothing is sent anywhere.
+      </p>
+    </section>
+  );
+}
+
 export function Settings() {
   const [state, actions] = useAttuneStore();
   const navigate = useNavigate();
@@ -200,6 +262,26 @@ export function Settings() {
           <MatchingPrefsForm profile={state.profile} />
         )}
       </section>
+
+      <ManagedProfileList
+        ids={state.hiddenIds}
+        headingId="settings-hidden"
+        heading="Hidden profiles"
+        emptyText="You haven't hidden any profiles. Profiles you hide from Discover will show up here so you can bring them back."
+        actionLabel="Unhide"
+        actionVerb="Unhide"
+        onAction={actions.unhideProfile}
+      />
+
+      <ManagedProfileList
+        ids={state.blockedIds}
+        headingId="settings-blocked"
+        heading="Blocked profiles"
+        emptyText="You haven't blocked any profiles. Blocking from Matches removes someone here, where you can undo it."
+        actionLabel="Unblock"
+        actionVerb="Unblock"
+        onAction={actions.unblockProfile}
+      />
 
       <section className="card settings-card" aria-labelledby="settings-account">
         <h2 className="section-heading" id="settings-account">Account</h2>

@@ -63,6 +63,32 @@
   min-height: var(--touch-min);
 }
 
+.managed-profile-list {
+  list-style: none;
+  margin: 0 0 var(--space-3);
+  padding: 0;
+}
+
+.managed-profile-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  padding: var(--space-2) 0;
+  border-bottom: 1px solid var(--color-border-subtle);
+}
+
+.managed-profile-row:last-child {
+  border-bottom: none;
+}
+
+.managed-profile-info {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  min-width: 0;
+}
+
 .sr-only {
   position: absolute;
   width: 1px;
