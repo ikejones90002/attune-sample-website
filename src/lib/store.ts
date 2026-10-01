@@ -1,6 +1,12 @@
-import { useState } from 'react';
-import { SAMPLE_PROFILES } from '../data/profiles';
 import type { ChatMessage, MatchRecord, UserProfile } from './types';
+
+/**
+ * Persistence layer for the prototype's browser-local state.
+ *
+ * This module owns only the stored shape, its defaults, and defensive
+ * load/save against localStorage. All reads and mutations go through the
+ * AttuneApi boundary (src/lib/api) — pages never touch this module.
+ */
 
 export const STORE_KEY = 'attune-store-v1';
 
@@ -24,25 +30,7 @@ export interface AttuneStore {
   idVerified: boolean;
 }
 
-export interface AttuneActions {
-  saveProfile(profile: UserProfile): void;
-  like(id: string): boolean;
-  pass(id: string): void;
-  unpass(id: string): void;
-  hideProfile(id: string): void;
-  unhideProfile(id: string): void;
-  reportProfile(id: string): void;
-  unmatchProfile(id: string): void;
-  blockProfile(id: string): void;
-  unblockProfile(id: string): void;
-  toggleEventRsvp(id: string): void;
-  toggleSavedResource(id: string): void;
-  setIdVerified(verified: boolean): void;
-  sendMessage(threadId: string, text: string, from?: 'me' | 'them'): void;
-  resetDemo(): void;
-}
-
-const INITIAL_STORE: AttuneStore = {
+export const INITIAL_STORE: AttuneStore = {
   profile: null,
   likes: [],
   passes: [],
@@ -123,144 +111,4 @@ export function saveStore(state: AttuneStore): void {
   } catch {
     // Storage unavailable or full — prototype continues in memory only.
   }
-}
-
-function makeMessageId(): string {
-  return `${Date.now().toString(36)}-${Math.random().toString(36).slice(2, 10)}`;
-}
-
-export function useAttuneStore(): [AttuneStore, AttuneActions] {
-  const [state, setState] = useState<AttuneStore>(loadStore);
-
-  const update = (next: AttuneStore): void => {
-    saveStore(next);
-    setState(next);
-  };
-
-  const actions: AttuneActions = {
-    saveProfile: (profile: UserProfile): void => {
-      update({ ...state, profile });
-    },
-
-    like: (id: string): boolean => {
-      if (state.likes.includes(id)) {
-        return state.matches.some((m) => m.profileId === id);
-      }
-      const nextLikes = [...state.likes, id];
-      const nextPasses = state.passes.filter((p) => p !== id);
-      const profile = SAMPLE_PROFILES.find((p) => p.id === id);
-      const isNewMatch =
-        profile !== undefined &&
-        profile.likesMeBack &&
-        !state.matches.some((m) => m.profileId === id);
-      const nextMatches = isNewMatch
-        ? [...state.matches, { profileId: id, matchedAt: new Date().toISOString() }]
-        : state.matches;
-      update({ ...state, likes: nextLikes, passes: nextPasses, matches: nextMatches });
-      return isNewMatch;
-    },
-
-    pass: (id: string): void => {
-      if (state.passes.includes(id)) {
-        return;
-      }
-      update({ ...state, passes: [...state.passes, id] });
-    },
-
-    unpass: (id: string): void => {
-      update({ ...state, passes: state.passes.filter((p) => p !== id) });
-    },
-
-    hideProfile: (id: string): void => {
-      if (state.hiddenIds.includes(id)) {
-        return;
-      }
-      update({ ...state, hiddenIds: [...state.hiddenIds, id] });
-    },
-
-    reportProfile: (id: string): void => {
-      update({
-        ...state,
-        reportedIds: { ...state.reportedIds, [id]: new Date().toISOString() },
-      });
-    },
-
-    unhideProfile: (id: string): void => {
-      update({ ...state, hiddenIds: state.hiddenIds.filter((h) => h !== id) });
-    },
-
-    unmatchProfile: (id: string): void => {
-      update({ ...state, matches: state.matches.filter((m) => m.profileId !== id) });
-    },
-
-    blockProfile: (id: string): void => {
-      update({
-        ...state,
-        blockedIds: state.blockedIds.includes(id) ? state.blockedIds : [...state.blockedIds, id],
-        matches: state.matches.filter((m) => m.profileId !== id),
-      });
-    },
-
-    unblockProfile: (id: string): void => {
-      update({ ...state, blockedIds: state.blockedIds.filter((b) => b !== id) });
-    },
-
-    toggleEventRsvp: (id: string): void => {
-      update({
-        ...state,
-        eventRsvps: state.eventRsvps.includes(id)
-          ? state.eventRsvps.filter((e) => e !== id)
-          : [...state.eventRsvps, id],
-      });
-    },
-
-    toggleSavedResource: (id: string): void => {
-      update({
-        ...state,
-        savedResourceIds: state.savedResourceIds.includes(id)
-          ? state.savedResourceIds.filter((r) => r !== id)
-          : [...state.savedResourceIds, id],
-      });
-    },
-
-    setIdVerified: (verified: boolean): void => {
-      update({ ...state, idVerified: verified });
-    },
-
-    sendMessage: (threadId: string, text: string, from: 'me' | 'them' = 'me'): void => {
-      const trimmed = text.trim();
-      if (trimmed.length === 0) {
-        return;
-      }
-      const message: ChatMessage = {
-        id: makeMessageId(),
-        from,
-        text: trimmed,
-        at: new Date().toISOString(),
-      };
-      const existing = state.messages[threadId] ?? [];
-      update({
-        ...state,
-        messages: { ...state.messages, [threadId]: [...existing, message] },
-      });
-    },
-
-    resetDemo: (): void => {
-      update({
-        profile: null,
-        likes: [],
-        passes: [],
-        matches: [],
-        messages: {},
-        hiddenIds: [],
-        reportedIds: {},
-        blockedIds: [],
-        eventRsvps: [],
-        savedResourceIds: [],
-        idVerified: false,
-      });
-    },
-  };
-
-  return [state, actions];
 }
