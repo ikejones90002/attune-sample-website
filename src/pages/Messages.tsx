@@ -4,6 +4,7 @@ import { Link, useNavigate, useParams } from 'react-router-dom';
 import { Avatar } from '../components/Avatar';
 import { DemoNote } from '../components/DemoNote';
 import { EmptyState } from '../components/EmptyState';
+import { VideoCallDialog } from '../components/VideoCallDialog';
 import { SAMPLE_PROFILES } from '../data/profiles';
 import { SAMPLE_REPLIES } from '../data/replies';
 import { loadStore, useAttuneStore } from '../lib/store';
@@ -80,6 +81,7 @@ function ThreadView({ threadId }: { threadId: string }) {
   const [state, actions] = useAttuneStore();
   const profile = SAMPLE_PROFILES.find((p) => p.id === threadId);
   const [draft, setDraft] = useState('');
+  const [callOpen, setCallOpen] = useState(false);
   const listRef = useRef<HTMLDivElement>(null);
   const replyTimer = useRef<number | undefined>(undefined);
 
@@ -218,6 +220,14 @@ function ThreadView({ threadId }: { threadId: string }) {
         </Link>
         <Avatar name={profile.name} gradient={profile.gradient} photo={profile.photo} size={48} />
         <h1 className="page-title">{profile.name}</h1>
+        <button
+          type="button"
+          className="btn-secondary video-call-button"
+          aria-label={`Start a simulated video call with ${profile.name}`}
+          onClick={() => setCallOpen(true)}
+        >
+          <span aria-hidden="true">📹</span> Video call
+        </button>
       </header>
       <DemoNote text="Demo preview — conversations are simulated in your browser; nothing is sent anywhere." />
       <div
@@ -291,6 +301,13 @@ function ThreadView({ threadId }: { threadId: string }) {
         <p className="dictation-note" role="status">
           {dictationNote}
         </p>
+      )}
+      {callOpen && (
+        <VideoCallDialog
+          profile={profile}
+          selfName={state.profile?.name ?? ''}
+          onClose={() => setCallOpen(false)}
+        />
       )}
     </div>
   );
