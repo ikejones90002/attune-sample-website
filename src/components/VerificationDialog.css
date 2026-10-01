@@ -1,0 +1,167 @@
+/* Simulated ID-verification wizard — token-only. */
+
+.verification-modal button {
+  min-height: var(--touch-min);
+}
+
+.verification-modal :focus-visible {
+  outline: var(--focus-width) solid var(--color-focus-ring);
+  outline-offset: var(--focus-offset);
+}
+
+.verification-progress-text {
+  margin: var(--space-4) 0 var(--space-2);
+  font-size: var(--text-sm);
+  color: var(--color-text-secondary);
+}
+
+.verification-progress {
+  height: var(--space-2);
+  border-radius: var(--radius-full);
+  background-color: var(--color-bg-overlay);
+  overflow: hidden;
+}
+
+.verification-progress-fill {
+  height: 100%;
+  border-radius: var(--radius-full);
+  background-color: var(--color-accent-strong);
+  transition: width var(--motion-base) ease;
+}
+
+.verification-step-title {
+  margin: var(--space-5) 0 var(--space-3);
+  font-size: var(--text-lg);
+  line-height: var(--leading-tight);
+  color: var(--color-text);
+}
+
+.verification-actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  margin-top: var(--space-5);
+}
+
+/* ---- Document step ---- */
+
+.verification-fieldset {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  margin: 0 0 var(--space-4);
+  padding: 0;
+  border: none;
+}
+
+.verification-fieldset legend {
+  margin-bottom: var(--space-2);
+  padding: 0;
+}
+
+.verification-radio {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  min-height: var(--touch-min);
+  padding: var(--space-2) var(--space-3);
+  border: 1px solid var(--color-border-subtle);
+  border-radius: var(--radius-md);
+  color: var(--color-text);
+  cursor: pointer;
+}
+
+.verification-radio input {
+  width: 1.25rem;
+  height: 1.25rem;
+  accent-color: var(--color-accent-strong);
+  flex-shrink: 0;
+}
+
+.verification-doc-frame {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  aspect-ratio: 8 / 5;
+  border: 2px dashed var(--color-border-medium);
+  border-radius: var(--radius-md);
+  background-color: var(--color-bg-raised);
+  overflow: hidden;
+}
+
+.verification-doc-frame--scanning {
+  border-color: var(--color-accent);
+}
+
+.verification-doc-label {
+  font-size: var(--text-sm);
+  color: var(--color-text-secondary);
+}
+
+.verification-scan-bar {
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: 8%;
+  height: var(--space-1);
+  background-color: var(--color-accent);
+  opacity: 0.7;
+  animation: verification-scan 1.2s ease-in-out infinite alternate;
+}
+
+@keyframes verification-scan {
+  from {
+    top: 8%;
+  }
+  to {
+    top: 88%;
+  }
+}
+
+/* ---- Shared capture status ---- */
+
+.verification-status {
+  min-height: var(--space-6);
+  margin: var(--space-3) 0;
+  line-height: var(--leading-normal);
+  color: var(--color-text-secondary);
+}
+
+.verification-status-done {
+  color: var(--color-success);
+  font-weight: 600;
+}
+
+/* ---- Selfie step ---- */
+
+.verification-selfie-frame {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 10rem;
+  height: 10rem;
+  margin: 0 auto var(--space-4);
+  border: 2px dashed var(--color-border-medium);
+  border-radius: var(--radius-full);
+  background-color: var(--color-bg-raised);
+}
+
+.verification-selfie-initials {
+  font-size: var(--text-4xl);
+  font-weight: 700;
+  color: var(--color-accent-text);
+}
+
+/* ---- Done step ---- */
+
+.verification-badge-row {
+  margin: 0 0 var(--space-3);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .verification-progress-fill {
+    transition: none;
+  }
+}
