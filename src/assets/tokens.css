@@ -1,0 +1,170 @@
+/* ==========================================================================
+   Attune design tokens — Step 1 of the implementation roadmap
+   --------------------------------------------------------------------------
+   Single source of truth for color, type, spacing, and touch targets.
+   - Dark theme is the default (matches the existing brand look).
+   - Light theme activates via `data-theme="light"` on <html>.
+   - Text colors are WCAG AAA (>= 7:1) against their theme background.
+     `--color-accent` keeps the brand violet for large text, decoration,
+     and glows; use `--color-accent-text` for body-size accent text and
+     `--color-accent-strong` as a filled-button background (white text on
+     it is AAA in both themes).
+   - Legacy `--bg-*` / `--text-*` / `--accent-*` names are kept as aliases
+     so existing page stylesheets keep working untouched.
+   ========================================================================== */
+
+:root {
+  /* ---- Color: dark (default) ---- */
+  --color-bg: #0a0a0f;
+  --color-bg-raised: #16161d;
+  --color-bg-overlay: #1f1f2a;
+  --color-bg-card: #252532;
+
+  --color-text: #f5f5f7;
+  --color-text-secondary: #c7c7cc;
+  --color-text-muted: #b3b3ba;
+
+  --color-accent: #8b5cf6;
+  --color-accent-hover: #a78bfa;
+  --color-accent-text: #c4b5fd;
+  --color-accent-strong: #6d28d9;
+  --color-accent-ink: #5b21b6;
+  --color-on-accent: #ffffff;
+
+  --color-border-subtle: rgba(255, 255, 255, 0.1);
+  --color-border-medium: rgba(255, 255, 255, 0.2);
+
+  --color-success: #34d399;
+  --color-warning: #fbbf24;
+  --color-error: #f87171;
+
+  --color-focus-ring: var(--color-accent-text);
+  --shadow-accent: 0 2px 8px rgba(139, 92, 246, 0.3);
+  --shadow-accent-lift: 0 4px 12px rgba(139, 92, 246, 0.4);
+
+  color-scheme: dark;
+
+  /* ---- Typography (rem-based) ---- */
+  --font-sans: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto',
+    'Oxygen', 'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans',
+    'Helvetica Neue', sans-serif;
+  --font-mono: 'Fira Code', 'Courier New', monospace;
+
+  --text-xs: 0.75rem;
+  --text-sm: 0.875rem;
+  --text-base: 1rem;
+  --text-lg: 1.125rem;
+  --text-xl: 1.25rem;
+  --text-2xl: 1.5rem;
+  --text-3xl: 1.875rem;
+  --text-4xl: 2.25rem;
+  --text-5xl: 3rem;
+
+  --display-1: clamp(2rem, 5vw, 3.5rem);
+  --display-2: clamp(1.5rem, 4vw, 2.5rem);
+
+  --leading-tight: 1.2;
+  --leading-normal: 1.6;
+  --leading-relaxed: 1.7;
+
+  /* ---- Spacing (0.25rem base) ---- */
+  --space-0: 0;
+  --space-1: 0.25rem;
+  --space-2: 0.5rem;
+  --space-3: 0.75rem;
+  --space-4: 1rem;
+  --space-5: 1.25rem;
+  --space-6: 1.5rem;
+  --space-8: 2rem;
+  --space-10: 2.5rem;
+  --space-12: 3rem;
+  --space-16: 4rem;
+
+  /* ---- Touch targets & radii ---- */
+  --touch-min: 2.75rem;
+
+  --radius-sm: 0.375rem;
+  --radius-md: 0.75rem;
+  --radius-lg: 1rem;
+  --radius-full: 9999px;
+
+  /* ---- Focus ---- */
+  --focus-width: 3px;
+  --focus-offset: 3px;
+
+  /* ---- Motion ---- */
+  --motion-fast: 0.15s;
+  --motion-base: 0.2s;
+
+  /* ---- Legacy aliases (existing page stylesheets use these) ---- */
+  --bg-primary: var(--color-bg);
+  --bg-secondary: var(--color-bg-raised);
+  --bg-tertiary: var(--color-bg-overlay);
+  --bg-card: var(--color-bg-card);
+  --text-primary: var(--color-text);
+  --text-secondary: var(--color-text-secondary);
+  --text-muted: var(--color-text-muted);
+  --accent-primary: var(--color-accent);
+  --accent-hover: var(--color-accent-hover);
+  --accent-light: var(--color-accent-text);
+  --border-subtle: var(--color-border-subtle);
+  --border-medium: var(--color-border-medium);
+  --success: var(--color-success);
+  --warning: var(--color-warning);
+  --error: var(--color-error);
+}
+
+/* ---- Color: light theme ---- */
+:root[data-theme="light"] {
+  --color-bg: #fbfbfd;
+  --color-bg-raised: #ffffff;
+  --color-bg-overlay: #f1f1f5;
+  --color-bg-card: #ffffff;
+
+  --color-text: #17171c;
+  --color-text-secondary: #3f3f46;
+  --color-text-muted: #52525b;
+
+  --color-accent: #7c3aed;
+  --color-accent-hover: #6d28d9;
+  --color-accent-text: #6d28d9;
+  --color-accent-strong: #6d28d9;
+  --color-on-accent: #ffffff;
+
+  --color-border-subtle: rgba(23, 23, 28, 0.1);
+  --color-border-medium: rgba(23, 23, 28, 0.2);
+
+  --color-success: #047857;
+  --color-warning: #92400e;
+  --color-error: #b91c1c;
+
+  --color-focus-ring: var(--color-accent-text);
+  --shadow-accent: 0 2px 8px rgba(124, 58, 237, 0.25);
+  --shadow-accent-lift: 0 4px 12px rgba(124, 58, 237, 0.35);
+
+  color-scheme: light;
+}
+
+@media (prefers-contrast: more) {
+  :root {
+    --color-bg: #000000;
+    --color-bg-raised: #101014;
+    --color-text: #ffffff;
+    --color-border-medium: rgba(255, 255, 255, 0.45);
+  }
+  :root[data-theme="light"] {
+    --color-bg: #ffffff;
+    --color-text: #000000;
+    --color-border-medium: rgba(0, 0, 0, 0.5);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
