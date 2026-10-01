@@ -2,6 +2,7 @@ import { BrowserRouter as Router, Routes, Route, Link, useLocation } from 'react
 import { useState } from 'react';
 import './App.css';
 import { Logo } from './components/Logo';
+import { ThemeToggle } from './components/ThemeToggle';
 import Home from './pages/Home';
 import Features from './pages/Features';
 import About from './pages/About';
@@ -67,6 +68,7 @@ function App() {
               <h1>Attune</h1>
               <p>A dating app built for how you actually connect.</p>
             </div>
+            <ThemeToggle />
           </div>
           <Navigation />
         </header>
