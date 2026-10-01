@@ -10,6 +10,10 @@ export interface AttuneStore {
   passes: string[];
   matches: MatchRecord[];
   messages: Record<string, ChatMessage[]>;
+  /** Profile ids the user hid from the Discover deck (additive, defaults to []). */
+  hiddenIds: string[];
+  /** Reported profile ids mapped to an ISO timestamp (additive, defaults to {}). */
+  reportedIds: Record<string, string>;
 }
 
 export interface AttuneActions {
@@ -17,6 +21,8 @@ export interface AttuneActions {
   like(id: string): boolean;
   pass(id: string): void;
   unpass(id: string): void;
+  hideProfile(id: string): void;
+  reportProfile(id: string): void;
   sendMessage(threadId: string, text: string, from?: 'me' | 'them'): void;
   resetDemo(): void;
 }
@@ -27,13 +33,33 @@ const INITIAL_STORE: AttuneStore = {
   passes: [],
   matches: [],
   messages: {},
+  hiddenIds: [],
+  reportedIds: {},
 };
+
+function stringArray(value: unknown): string[] {
+  return Array.isArray(value) ? value.filter((id): id is string => typeof id === 'string') : [];
+}
+
+function stringRecord(value: unknown): Record<string, string> {
+  if (typeof value !== 'object' || value === null || Array.isArray(value)) {
+    return {};
+  }
+  const record: Record<string, string> = {};
+  for (const [key, val] of Object.entries(value)) {
+    if (typeof val === 'string') {
+      record[key] = val;
+    }
+  }
+  return record;
+}
 
 function isValidStore(value: unknown): value is AttuneStore {
   if (typeof value !== 'object' || value === null) {
     return false;
   }
   const v = value as Record<string, unknown>;
+  // hiddenIds / reportedIds were added later — old stored state stays valid.
   return (
     (v.profile === null || typeof v.profile === 'object') &&
     Array.isArray(v.likes) &&
@@ -56,10 +82,12 @@ export function loadStore(): AttuneStore {
     }
     return {
       profile: parsed.profile,
-      likes: parsed.likes.filter((id): id is string => typeof id === 'string'),
-      passes: parsed.passes.filter((id): id is string => typeof id === 'string'),
+      likes: stringArray(parsed.likes),
+      passes: stringArray(parsed.passes),
       matches: parsed.matches,
       messages: parsed.messages,
+      hiddenIds: stringArray(parsed.hiddenIds),
+      reportedIds: stringRecord(parsed.reportedIds),
     };
   } catch {
     return { ...INITIAL_STORE };
@@ -120,6 +148,20 @@ export function useAttuneStore(): [AttuneStore, AttuneActions] {
       update({ ...state, passes: state.passes.filter((p) => p !== id) });
     },
 
+    hideProfile: (id: string): void => {
+      if (state.hiddenIds.includes(id)) {
+        return;
+      }
+      update({ ...state, hiddenIds: [...state.hiddenIds, id] });
+    },
+
+    reportProfile: (id: string): void => {
+      update({
+        ...state,
+        reportedIds: { ...state.reportedIds, [id]: new Date().toISOString() },
+      });
+    },
+
     sendMessage: (threadId: string, text: string, from: 'me' | 'them' = 'me'): void => {
       const trimmed = text.trim();
       if (trimmed.length === 0) {
@@ -139,7 +181,15 @@ export function useAttuneStore(): [AttuneStore, AttuneActions] {
     },
 
     resetDemo: (): void => {
-      update({ profile: null, likes: [], passes: [], matches: [], messages: {} });
+      update({
+        profile: null,
+        likes: [],
+        passes: [],
+        matches: [],
+        messages: {},
+        hiddenIds: [],
+        reportedIds: {},
+      });
     },
   };
 
