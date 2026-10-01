@@ -14,6 +14,12 @@ export interface AttuneStore {
   hiddenIds: string[];
   /** Reported profile ids mapped to an ISO timestamp (additive, defaults to {}). */
   reportedIds: Record<string, string>;
+  /** Profile ids the user blocked from Matches and Discover (additive, defaults to []). */
+  blockedIds: string[];
+  /** Community event ids the user RSVP'd to as interested (additive, defaults to []). */
+  eventRsvps: string[];
+  /** Community resource ids the user saved (additive, defaults to []). */
+  savedResourceIds: string[];
 }
 
 export interface AttuneActions {
@@ -22,7 +28,13 @@ export interface AttuneActions {
   pass(id: string): void;
   unpass(id: string): void;
   hideProfile(id: string): void;
+  unhideProfile(id: string): void;
   reportProfile(id: string): void;
+  unmatchProfile(id: string): void;
+  blockProfile(id: string): void;
+  unblockProfile(id: string): void;
+  toggleEventRsvp(id: string): void;
+  toggleSavedResource(id: string): void;
   sendMessage(threadId: string, text: string, from?: 'me' | 'them'): void;
   resetDemo(): void;
 }
@@ -35,6 +47,9 @@ const INITIAL_STORE: AttuneStore = {
   messages: {},
   hiddenIds: [],
   reportedIds: {},
+  blockedIds: [],
+  eventRsvps: [],
+  savedResourceIds: [],
 };
 
 function stringArray(value: unknown): string[] {
@@ -88,6 +103,9 @@ export function loadStore(): AttuneStore {
       messages: parsed.messages,
       hiddenIds: stringArray(parsed.hiddenIds),
       reportedIds: stringRecord(parsed.reportedIds),
+      blockedIds: stringArray(parsed.blockedIds),
+      eventRsvps: stringArray(parsed.eventRsvps),
+      savedResourceIds: stringArray(parsed.savedResourceIds),
     };
   } catch {
     return { ...INITIAL_STORE };
@@ -162,6 +180,44 @@ export function useAttuneStore(): [AttuneStore, AttuneActions] {
       });
     },
 
+    unhideProfile: (id: string): void => {
+      update({ ...state, hiddenIds: state.hiddenIds.filter((h) => h !== id) });
+    },
+
+    unmatchProfile: (id: string): void => {
+      update({ ...state, matches: state.matches.filter((m) => m.profileId !== id) });
+    },
+
+    blockProfile: (id: string): void => {
+      update({
+        ...state,
+        blockedIds: state.blockedIds.includes(id) ? state.blockedIds : [...state.blockedIds, id],
+        matches: state.matches.filter((m) => m.profileId !== id),
+      });
+    },
+
+    unblockProfile: (id: string): void => {
+      update({ ...state, blockedIds: state.blockedIds.filter((b) => b !== id) });
+    },
+
+    toggleEventRsvp: (id: string): void => {
+      update({
+        ...state,
+        eventRsvps: state.eventRsvps.includes(id)
+          ? state.eventRsvps.filter((e) => e !== id)
+          : [...state.eventRsvps, id],
+      });
+    },
+
+    toggleSavedResource: (id: string): void => {
+      update({
+        ...state,
+        savedResourceIds: state.savedResourceIds.includes(id)
+          ? state.savedResourceIds.filter((r) => r !== id)
+          : [...state.savedResourceIds, id],
+      });
+    },
+
     sendMessage: (threadId: string, text: string, from: 'me' | 'them' = 'me'): void => {
       const trimmed = text.trim();
       if (trimmed.length === 0) {
@@ -189,6 +245,9 @@ export function useAttuneStore(): [AttuneStore, AttuneActions] {
         messages: {},
         hiddenIds: [],
         reportedIds: {},
+        blockedIds: [],
+        eventRsvps: [],
+        savedResourceIds: [],
       });
     },
   };

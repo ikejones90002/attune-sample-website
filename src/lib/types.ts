@@ -48,6 +48,7 @@ export interface SampleProfile {
   communication: string[];
   access: string[];
   gradient: [string, string];
+  photo: string;
   likesMeBack: boolean;
 }
 
