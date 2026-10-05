@@ -14,8 +14,8 @@ function Home() {
         </p>
         <div className="cta-buttons">
           <button className="cta-primary">Join the Waitlist</button>
-          <Link to="/features">
-            <button className="cta-secondary">Explore Features</button>
+          <Link to="/features" className="cta-secondary">
+            Explore Features
           </Link>
         </div>
       </section>

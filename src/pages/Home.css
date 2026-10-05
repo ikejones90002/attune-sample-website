@@ -58,6 +58,9 @@
   padding: 1rem 2.5rem;
   font-size: 1.1rem;
   border-radius: 12px;
+  display: inline-block;
+  text-decoration: none;
+  cursor: pointer;
 }
 
 .cta-secondary:hover {

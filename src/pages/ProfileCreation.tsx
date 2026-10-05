@@ -252,7 +252,14 @@ export default function ProfileCreation() {
     <div className="profile-creation">
       <div className="profile-creation-container">
         {/* Progress Bar */}
-        <div className="progress-bar">
+        <div
+          className="progress-bar"
+          role="progressbar"
+          aria-valuenow={step}
+          aria-valuemin={1}
+          aria-valuemax={5}
+          aria-label="Profile creation progress"
+        >
           <div className="progress-fill" style={{ width: `${(step / 5) * 100}%` }} />
         </div>
         <p className="step-counter" aria-live="polite">Step {step} of 5</p>
@@ -310,7 +317,9 @@ export default function ProfileCreation() {
             <h1>Upload Photos</h1>
             <p className="step-description">Share some photos of yourself!</p>
 
+            <label htmlFor="photo-upload">Upload photos (up to 6)</label>
             <input
+              id="photo-upload"
               type="file"
               accept="image/*"
               multiple
@@ -349,7 +358,8 @@ export default function ProfileCreation() {
             ) : (
               <div className="button-group">
                 <button onClick={startVideoRecording}>Start Recording</button>
-                <input type="file" accept="video/*" ref={videoInputRef} onChange={handleVideoUpload} />
+                <label htmlFor="video-upload">Or upload a video file</label>
+                <input id="video-upload" type="file" accept="video/*" ref={videoInputRef} onChange={handleVideoUpload} />
               </div>
             )}
 
@@ -375,7 +385,8 @@ export default function ProfileCreation() {
             ) : (
               <div className="button-group">
                 <button onClick={startAudioRecording}>Start Recording</button>
-                <input type="file" accept="audio/*" ref={audioInputRef} onChange={handleAudioUpload} />
+                <label htmlFor="audio-upload">Or upload an audio file</label>
+                <input id="audio-upload" type="file" accept="audio/*" ref={audioInputRef} onChange={handleAudioUpload} />
               </div>
             )}
 
