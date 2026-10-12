@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { DemoNote } from './DemoNote';
 import { VerifiedBadge } from './VerifiedBadge';
+import { useFocusTrap } from '../hooks/useFocusTrap';
 import './ProfileModals.css';
 import './VerificationDialog.css';
 
@@ -30,7 +31,7 @@ export function VerificationDialog({ selfName, onClose, onComplete }: Verificati
   const [docPhase, setDocPhase] = useState<CapturePhase>('idle');
   const [selfiePhase, setSelfiePhase] = useState<CapturePhase>('idle');
   const headingRef = useRef<HTMLHeadingElement>(null);
-  const restoreRef = useRef<HTMLElement | null>(null);
+  const dialogRef = useRef<HTMLDivElement>(null);
   const timerRef = useRef<number | null>(null);
 
   const clearPending = useCallback((): void => {
@@ -40,22 +41,21 @@ export function VerificationDialog({ selfName, onClose, onComplete }: Verificati
     }
   }, []);
 
-  // Focus capture on open, focus restore on close; Escape cancels at any step.
+  // Focus trap: keeps Tab inside the modal; Escape cancels at any step.
+  // Focus restore on close is handled by the hook; the step heading effect
+  // below moves focus to the current step (including on mount).
+  const handleEscape = useCallback(() => {
+    clearPending();
+    onClose();
+  }, [clearPending, onClose]);
+  useFocusTrap(dialogRef, handleEscape);
+
+  // Clear any pending simulated-capture timer if the dialog unmounts.
   useEffect(() => {
-    restoreRef.current = document.activeElement as HTMLElement | null;
-    function onKeyDown(event: KeyboardEvent) {
-      if (event.key === 'Escape') {
-        clearPending();
-        onClose();
-      }
-    }
-    window.addEventListener('keydown', onKeyDown);
     return () => {
-      window.removeEventListener('keydown', onKeyDown);
       clearPending();
-      restoreRef.current?.focus();
     };
-  }, [onClose, clearPending]);
+  }, [clearPending]);
 
   // Move focus to the step heading whenever the step changes (including mount).
   useEffect(() => {
@@ -103,6 +103,7 @@ export function VerificationDialog({ selfName, onClose, onComplete }: Verificati
   return (
     <div className="modal-overlay" onClick={handleClose}>
       <div
+        ref={dialogRef}
         className="modal verification-modal"
         role="dialog"
         aria-modal="true"

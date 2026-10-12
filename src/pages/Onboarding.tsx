@@ -180,6 +180,15 @@ function Onboarding() {
     window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
+  // Move focus to the step heading on every step change (M8): the Next/Back
+  // button the user activated unmounts, which would otherwise drop focus to
+  // <body> and leave screen-reader users lost. Only one step renders at a
+  // time, so a single ref covers all step headings.
+  const stepHeadingRef = useRef<HTMLHeadingElement>(null);
+  useEffect(() => {
+    stepHeadingRef.current?.focus();
+  }, [currentStep]);
+
   const getStepNumber = (step: OnboardingStep): number => STEPS.indexOf(step) + 1;
 
   const totalSteps = STEPS.length;
@@ -240,6 +249,7 @@ function Onboarding() {
           <div
             className="progress-bar-container"
             role="progressbar"
+            aria-label="Onboarding progress"
             aria-valuenow={getStepNumber(currentStep)}
             aria-valuemin={1}
             aria-valuemax={totalSteps}
@@ -261,7 +271,7 @@ function Onboarding() {
           <div className="onboarding-step welcome-step">
             <div className="step-content">
               <img src={logoImage} alt="Attune logo" className="welcome-logo" />
-              <h1>Welcome to Attune</h1>
+              <h1 ref={stepHeadingRef} tabIndex={-1}>Welcome to Attune</h1>
               <p className="welcome-subtitle">
                 We&apos;re excited to help you connect authentically. This quick setup will help
                 us personalize your experience based on how you communicate.
@@ -310,7 +320,7 @@ function Onboarding() {
         {currentStep === 'accessibility' && (
           <div className="onboarding-step accessibility-step">
             <div className="step-content">
-              <h2>How do you experience the world?</h2>
+              <h1 ref={stepHeadingRef} tabIndex={-1}>How do you experience the world?</h1>
               <p className="step-description">
                 Select all that apply. This helps us provide the best experience and connect you
                 with people who understand your needs.
@@ -365,7 +375,7 @@ function Onboarding() {
         {currentStep === 'communication' && (
           <div className="onboarding-step communication-step">
             <div className="step-content">
-              <h2>How do you prefer to communicate?</h2>
+              <h1 ref={stepHeadingRef} tabIndex={-1}>How do you prefer to communicate?</h1>
               <p className="step-description">
                 Select your preferred methods. This helps us match you with people who share
                 your communication style.
@@ -471,7 +481,7 @@ function Onboarding() {
         {currentStep === 'profile' && (
           <div className="onboarding-step profile-step">
             <div className="step-content">
-              <h2>Tell us a bit about yourself</h2>
+              <h1 ref={stepHeadingRef} tabIndex={-1}>Tell us a bit about yourself</h1>
               <p className="step-description">
                 Basic info to help people get to know you. You can add photos and more details
                 later.
@@ -584,7 +594,7 @@ function Onboarding() {
         {currentStep === 'matching' && (
           <div className="onboarding-step matching-step">
             <div className="step-content">
-              <h2>Who would you like to meet?</h2>
+              <h1 ref={stepHeadingRef} tabIndex={-1}>Who would you like to meet?</h1>
               <p className="step-description">
                 Set your matching preferences. You can adjust these anytime in settings.
               </p>
@@ -687,7 +697,7 @@ function Onboarding() {
         {currentStep === 'safety' && (
           <div className="onboarding-step safety-step">
             <div className="step-content">
-              <h2>Safety, honestly</h2>
+              <h1 ref={stepHeadingRef} tabIndex={-1}>Safety, honestly</h1>
               <p className="step-description">
                 A few things worth knowing before you start matching.
               </p>
@@ -730,7 +740,7 @@ function Onboarding() {
               <div className="success-icon" aria-hidden="true">
                 ✓
               </div>
-              <h1>You&apos;re all set!</h1>
+              <h1 ref={stepHeadingRef} tabIndex={-1}>You&apos;re all set!</h1>
               <p className="complete-subtitle">
                 Welcome to Attune, {profile.name}. Your personalized experience is ready.
               </p>
@@ -821,10 +831,10 @@ function Onboarding() {
               <div className="next-steps">
                 <h3>Next Steps</h3>
                 <ul>
-                  <li>✨ Add photos to your profile</li>
-                  <li>🎥 Record a video introduction</li>
-                  <li>🔍 Browse potential matches</li>
-                  <li>💬 Start connecting!</li>
+                  <li><span aria-hidden="true">✨</span> Add photos to your profile</li>
+                  <li><span aria-hidden="true">🎥</span> Record a video introduction</li>
+                  <li><span aria-hidden="true">🔍</span> Browse potential matches</li>
+                  <li><span aria-hidden="true">💬</span> Start connecting!</li>
                 </ul>
               </div>
             </div>

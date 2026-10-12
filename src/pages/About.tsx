@@ -4,7 +4,7 @@ function About() {
   return (
     <div className="about-page">
       <header className="page-header">
-        <h2>About Attune</h2>
+        <h1>About Attune</h1>
         <p className="page-subtitle">
           Accessibility-first, not accessibility-retrofitted.
         </p>

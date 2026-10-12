@@ -4,7 +4,7 @@ function Roadmap() {
   return (
     <div className="roadmap-page">
       <header className="page-header">
-        <h2>Product Roadmap</h2>
+        <h1>Product Roadmap</h1>
         <p className="page-subtitle">
           From MVP to industry-leading innovation. Here's how we're building Attune.
         </p>
@@ -85,7 +85,7 @@ function Roadmap() {
           <h3>Key Risks / Things to Validate Early</h3>
           <div className="risk-grid">
             <div className="risk-card">
-              <h4>🏷️ Name & Icon</h4>
+              <h4><span aria-hidden="true">🏷️</span> Name & Icon</h4>
               <p>
                 Test "Attune" and the hand/heart mark with actual Deaf and blind users/advisors 
                 before finalizing. Anything referencing a real ASL sign (e.g. ILY handshape) 
@@ -94,7 +94,7 @@ function Roadmap() {
             </div>
             
             <div className="risk-card">
-              <h4>🎥 VRI Feature Demand</h4>
+              <h4><span aria-hidden="true">🎥</span> VRI Feature Demand</h4>
               <p>
                 Before investing in Phase 3 interpreter integration, confirm the Deaf community 
                 actually wants this vs. just wanting clean, reliable captioned video.
@@ -102,7 +102,7 @@ function Roadmap() {
             </div>
             
             <div className="risk-card">
-              <h4>🛡️ Safety Infrastructure</h4>
+              <h4><span aria-hidden="true">🛡️</span> Safety Infrastructure</h4>
               <p>
                 This demographic reports elevated rates of online harassment; verification, 
                 reporting, and moderation need to be solid at MVP, not bolted on later.
@@ -110,7 +110,7 @@ function Roadmap() {
             </div>
             
             <div className="risk-card">
-              <h4>🌍 Sign Language Diversity</h4>
+              <h4><span aria-hidden="true">🌍</span> Sign Language Diversity</h4>
               <p>
                 Sign language isn't universal — ASL, BSL, etc. are different languages; let users 
                 specify which they use rather than assuming one.

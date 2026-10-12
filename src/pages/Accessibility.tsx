@@ -4,9 +4,9 @@ function Accessibility() {
   return (
     <div className="accessibility-page">
       <header className="page-header">
-        <h2>
+        <h1>
           Accessibility-First Design
-        </h2>
+        </h1>
         <p className="page-subtitle">
           Committed to a screen-reader-native UI in every component. 
           Below are our core principles and practices ensuring accessibility across the platform.

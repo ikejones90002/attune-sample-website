@@ -1,6 +1,7 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import { CALL_SCRIPTS, DEFAULT_CALL_SCRIPT } from '../data/callScripts';
 import { isReadAloudSupported, speakText, stopSpeaking } from '../lib/voice';
+import { useFocusTrap } from '../hooks/useFocusTrap';
 import type { SampleProfile } from '../lib/types';
 import './VideoCall.css';
 
@@ -55,9 +56,25 @@ export function VideoCallDialog({ profile, selfName, onClose }: VideoCallDialogP
 
   const endCallRef = useRef<HTMLButtonElement>(null);
   const backRef = useRef<HTMLButtonElement>(null);
-  const restoreRef = useRef<HTMLElement | null>(null);
+  const dialogRef = useRef<HTMLDivElement>(null);
   const readAloudRef = useRef(false);
   const transcriptListRef = useRef<HTMLOListElement>(null);
+  // Track phase in a ref so the stable Escape handler always sees the latest.
+  const phaseRef = useRef(phase);
+  phaseRef.current = phase;
+
+  // Focus trap: keeps Tab inside the dialog, moves focus in on open,
+  // restores it on close. Esc ends the call first, then closes from summary.
+  const handleEscape = useCallback(() => {
+    if (phaseRef.current === 'ended') {
+      onClose();
+    } else {
+      stopSpeaking();
+      setReadAloudOn(false);
+      setPhase('ended');
+    }
+  }, [onClose]);
+  useFocusTrap(dialogRef, handleEscape);
 
   function endCall() {
     stopSpeaking();
@@ -65,39 +82,12 @@ export function VideoCallDialog({ profile, selfName, onClose }: VideoCallDialogP
     setPhase('ended');
   }
 
-  // Move focus into the dialog on open; restore it on close.
-  useEffect(() => {
-    restoreRef.current = document.activeElement as HTMLElement | null;
-    endCallRef.current?.focus();
-    return () => {
-      restoreRef.current?.focus();
-    };
-  }, []);
-
   // Focus the summary's action when the call ends.
   useEffect(() => {
     if (phase === 'ended') {
       backRef.current?.focus();
     }
   }, [phase]);
-
-  // Esc ends the call first, then closes from the summary.
-  useEffect(() => {
-    function onKeyDown(event: KeyboardEvent) {
-      if (event.key !== 'Escape') {
-        return;
-      }
-      if (phase === 'ended') {
-        onClose();
-      } else {
-        endCall();
-      }
-    }
-    window.addEventListener('keydown', onKeyDown);
-    return () => {
-      window.removeEventListener('keydown', onKeyDown);
-    };
-  }, [phase, onClose]);
 
   // "Connecting…" then in-call.
   useEffect(() => {
@@ -207,6 +197,7 @@ export function VideoCallDialog({ profile, selfName, onClose }: VideoCallDialogP
       onClick={phase === 'ended' ? onClose : undefined}
     >
       <div
+        ref={dialogRef}
         className="call-dialog"
         role="dialog"
         aria-modal="true"
@@ -260,7 +251,7 @@ export function VideoCallDialog({ profile, selfName, onClose }: VideoCallDialogP
               <img
                 className="call-remote-img"
                 src={profile.photo}
-                alt=""
+                alt={`Simulated video of ${profile.name}`}
                 draggable={false}
               />
               <div className="call-remote-top">
@@ -294,7 +285,7 @@ export function VideoCallDialog({ profile, selfName, onClose }: VideoCallDialogP
                 </span>
               </div>
               {captionsOn && captionText !== '' && (
-                <div className="call-captions">
+                <div className="call-captions" role="status" aria-label="Live captions">
                   <p className="call-caption-text">
                     <span className="call-caption-speaker">{firstName}:</span>{' '}
                     {captionText}

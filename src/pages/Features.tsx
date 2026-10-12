@@ -14,7 +14,7 @@ function Features() {
   return (
     <div className="features-page">
       <header className="page-header">
-        <h2>Features Built for How You Actually Connect</h2>
+        <h1>Features Built for How You Actually Connect</h1>
         <p className="page-subtitle">
           Every feature designed with accessibility at its core, not as an afterthought.
         </p>
@@ -65,7 +65,7 @@ function Features() {
             </div>
             
             <div className="accessibility-checklist">
-              <h4>✓ Accessibility Features:</h4>
+              <h4><span aria-hidden="true">✓</span> Accessibility Features:</h4>
               <ul>
                 <li>Descriptive alt text on profile photo</li>
                 <li>Proper heading hierarchy (h4 for name)</li>
@@ -93,21 +93,21 @@ function Features() {
             
             <div className="feature-highlights">
               <div className="highlight-item">
-                <span className="highlight-icon">🎯</span>
+                <span className="highlight-icon" aria-hidden="true">🎯</span>
                 <div>
                   <strong>Real-time accuracy</strong>
                   <p>Speech-to-text with &lt;1 second latency</p>
                 </div>
               </div>
               <div className="highlight-item">
-                <span className="highlight-icon">📹</span>
+                <span className="highlight-icon" aria-hidden="true">📹</span>
                 <div>
                   <strong>High frame-rate video</strong>
                   <p>60fps for clear sign language visibility</p>
                 </div>
               </div>
               <div className="highlight-item">
-                <span className="highlight-icon">⚙️</span>
+                <span className="highlight-icon" aria-hidden="true">⚙️</span>
                 <div>
                   <strong>Customizable captions</strong>
                   <p>Adjust size, position, and background</p>
@@ -128,7 +128,7 @@ function Features() {
             <div className="video-chat-mockup">
               <div className="video-frame">
                 <div className="video-placeholder">
-                  <span className="video-icon">📹</span>
+                  <span className="video-icon" aria-hidden="true">📹</span>
                   <p>Video Call Window</p>
                 </div>
                 {activeCaptionDemo && (
@@ -156,10 +156,10 @@ function Features() {
           <div className="feature-visual">
             <div className={`theme-preview ${activeTheme}`}>
               <div className="theme-controls">
-                <label htmlFor="theme-toggle">
+                <span id="theme-group-label">
                   <strong>Theme:</strong>
-                </label>
-                <div className="theme-buttons">
+                </span>
+                <div className="theme-buttons" role="group" aria-labelledby="theme-group-label">
                   <button 
                     id="theme-toggle"
                     className={activeTheme === 'normal' ? 'active' : ''}
@@ -189,10 +189,6 @@ function Features() {
                   max="200" 
                   value={fontSize}
                   onChange={(e) => setFontSize(Number(e.target.value))}
-                  aria-valuemin={100}
-                  aria-valuemax={200}
-                  aria-valuenow={fontSize}
-                  aria-label="Adjust font size percentage"
                 />
               </div>
 
@@ -244,28 +240,28 @@ function Features() {
 
         <div className="profile-modes-grid">
           <div className="mode-card">
-            <div className="mode-icon">📸</div>
+            <div className="mode-icon" aria-hidden="true">📸</div>
             <h4>Photo Profiles</h4>
             <p>Upload photos with auto-generated alt-text powered by vision AI</p>
             <span className="mode-tag">Accessible to all</span>
           </div>
 
           <div className="mode-card">
-            <div className="mode-icon">🎥</div>
+            <div className="mode-icon" aria-hidden="true">🎥</div>
             <h4>Video Intros</h4>
             <p>30-60 second video introductions with live captions</p>
             <span className="mode-tag">ASL friendly</span>
           </div>
 
           <div className="mode-card">
-            <div className="mode-icon">🎙️</div>
+            <div className="mode-icon" aria-hidden="true">🎙️</div>
             <h4>Audio Bios</h4>
             <p>Voice recordings with automatic transcription</p>
             <span className="mode-tag">Screen-reader ready</span>
           </div>
 
           <div className="mode-card">
-            <div className="mode-icon">✍️</div>
+            <div className="mode-icon" aria-hidden="true">✍️</div>
             <h4>Text Descriptions</h4>
             <p>Rich text bios with semantic formatting</p>
             <span className="mode-tag">Universal access</span>
@@ -284,7 +280,7 @@ function Features() {
 
         <div className="comm-styles-grid">
           <div className="comm-style-card">
-            <h4>🤟 Sign Language</h4>
+            <h4><span aria-hidden="true">🤟</span> Sign Language</h4>
             <ul>
               <li>ASL fluency level</li>
               <li>BSL, LSF, and other languages</li>
@@ -293,7 +289,7 @@ function Features() {
           </div>
 
           <div className="comm-style-card">
-            <h4>👄 Lip Reading</h4>
+            <h4><span aria-hidden="true">👄</span> Lip Reading</h4>
             <ul>
               <li>Comfort level indicator</li>
               <li>Lighting preferences</li>
@@ -302,7 +298,7 @@ function Features() {
           </div>
 
           <div className="comm-style-card">
-            <h4>🔊 Audio Preferences</h4>
+            <h4><span aria-hidden="true">🔊</span> Audio Preferences</h4>
             <ul>
               <li>Voice chat comfort</li>
               <li>Preferred volume levels</li>
@@ -311,7 +307,7 @@ function Features() {
           </div>
 
           <div className="comm-style-card">
-            <h4>📱 Assistive Tech</h4>
+            <h4><span aria-hidden="true">📱</span> Assistive Tech</h4>
             <ul>
               <li>Screen reader usage</li>
               <li>Voice control</li>
@@ -342,7 +338,7 @@ function Features() {
 
         <div className="safety-grid">
           <div className="safety-feature">
-            <div className="safety-icon">🆔</div>
+            <div className="safety-icon" aria-hidden="true">🆔</div>
             <h4>ID Verification</h4>
             <p>
               Identity verification via Persona or Veriff ensures real people with verified 
@@ -351,7 +347,7 @@ function Features() {
           </div>
 
           <div className="safety-feature">
-            <div className="safety-icon">🚫</div>
+            <div className="safety-icon" aria-hidden="true">🚫</div>
             <h4>One-Tap Blocking</h4>
             <p>
               Instantly block users with a single tap. Blocked users cannot see your profile, 
@@ -360,7 +356,7 @@ function Features() {
           </div>
 
           <div className="safety-feature">
-            <div className="safety-icon">📢</div>
+            <div className="safety-icon" aria-hidden="true">📢</div>
             <h4>Detailed Reporting</h4>
             <p>
               Report inappropriate behavior with context. Screenshots, message history, and 
@@ -369,7 +365,7 @@ function Features() {
           </div>
 
           <div className="safety-feature">
-            <div className="safety-icon">👥</div>
+            <div className="safety-icon" aria-hidden="true">👥</div>
             <h4>Dedicated Moderation</h4>
             <p>
               Human moderators trained in disability awareness review reports and enforce 

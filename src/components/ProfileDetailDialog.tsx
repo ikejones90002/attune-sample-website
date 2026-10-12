@@ -1,6 +1,7 @@
-import { useEffect, useRef } from 'react';
+import { useRef } from 'react';
 import { Avatar } from './Avatar';
 import { DemoNote } from './DemoNote';
+import { useFocusTrap } from '../hooks/useFocusTrap';
 import type { CompatibilityResult } from '../lib/compatibility';
 import type { SampleProfile } from '../lib/types';
 import './ProfileModals.css';
@@ -18,27 +19,16 @@ export function ProfileDetailDialog({
   compatibility,
   onClose,
 }: ProfileDetailDialogProps) {
-  const closeRef = useRef<HTMLButtonElement>(null);
-  const restoreRef = useRef<HTMLElement | null>(null);
+  const dialogRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    restoreRef.current = document.activeElement as HTMLElement | null;
-    closeRef.current?.focus();
-    function onKeyDown(event: KeyboardEvent) {
-      if (event.key === 'Escape') {
-        onClose();
-      }
-    }
-    window.addEventListener('keydown', onKeyDown);
-    return () => {
-      window.removeEventListener('keydown', onKeyDown);
-      restoreRef.current?.focus();
-    };
-  }, [onClose]);
+  // Focus trap: keeps Tab inside the modal, moves focus in on open,
+  // restores it on close; Escape closes.
+  useFocusTrap(dialogRef, onClose);
 
   return (
     <div className="modal-overlay" onClick={onClose}>
       <div
+        ref={dialogRef}
         className="modal"
         role="dialog"
         aria-modal="true"
@@ -105,7 +95,7 @@ export function ProfileDetailDialog({
         <DemoNote text="Demo preview — this score is a simple estimate from your matching preferences and sample profile data, not a real compatibility prediction." />
 
         <div className="modal-actions">
-          <button ref={closeRef} type="button" className="btn-primary" onClick={onClose}>
+          <button type="button" className="btn-primary" onClick={onClose}>
             Close
           </button>
         </div>

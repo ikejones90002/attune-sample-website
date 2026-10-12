@@ -49,6 +49,11 @@
   font-size: 1.1rem;
   border-radius: 12px;
   box-shadow: 0 4px 16px rgba(139, 92, 246, 0.4);
+  /* Links styled as CTAs */
+  display: inline-block;
+  text-decoration: none;
+  color: #fff;
+  text-align: center;
 }
 
 .cta-secondary {

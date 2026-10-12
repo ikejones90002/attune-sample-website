@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import type { FormEvent } from 'react';
 import { DemoNote } from '../components/DemoNote';
+import { useFocusTrap } from '../hooks/useFocusTrap';
 import { useAttune } from '../lib/api/AttuneApiProvider';
 import {
   COMMUNITY_EVENTS,
@@ -48,19 +49,17 @@ function ThreadDialog({
   onClose: () => void;
 }) {
   const headingRef = useRef<HTMLHeadingElement>(null);
+  const dialogRef = useRef<HTMLDivElement>(null);
   const [replyDraft, setReplyDraft] = useState('');
 
+  // Focus trap: keeps Tab inside the dialog, restores focus to the invoking
+  // element on close (M10); Escape closes.
+  useFocusTrap(dialogRef, onClose);
+
+  // Move focus to the dialog heading on open.
   useEffect(() => {
     headingRef.current?.focus();
   }, []);
-
-  useEffect(() => {
-    function onKeyDown(event: globalThis.KeyboardEvent) {
-      if (event.key === 'Escape') onClose();
-    }
-    window.addEventListener('keydown', onKeyDown);
-    return () => window.removeEventListener('keydown', onKeyDown);
-  }, [onClose]);
 
   const allReplies = [...thread.replies, ...extraReplies];
 
@@ -75,6 +74,7 @@ function ThreadDialog({
   return (
     <div className="dialog-overlay">
       <div
+        ref={dialogRef}
         className="dialog"
         role="dialog"
         aria-modal="true"
@@ -93,7 +93,7 @@ function ThreadDialog({
         {allReplies.length === 0 ? (
           <p className="thread-meta">No replies yet — be the first to share.</p>
         ) : (
-          <ul className="reply-list">
+          <ul className="reply-list" aria-live="polite" aria-label="Thread replies">
             {allReplies.map((reply, index) => (
               <li key={`${reply.at}-${index}`} className="reply">
                 <p className="reply-author">{reply.author}</p>
@@ -137,20 +137,18 @@ function ReportDialog({
   onClose: () => void;
 }) {
   const headingRef = useRef<HTMLHeadingElement>(null);
+  const dialogRef = useRef<HTMLDivElement>(null);
   const [reason, setReason] = useState(REPORT_REASONS[0]);
   const [submitted, setSubmitted] = useState(false);
 
+  // Focus trap: keeps Tab inside the dialog, restores focus to the invoking
+  // element on close (M10); Escape closes.
+  useFocusTrap(dialogRef, onClose);
+
+  // Move focus to the dialog heading on open.
   useEffect(() => {
     headingRef.current?.focus();
   }, []);
-
-  useEffect(() => {
-    function onKeyDown(event: globalThis.KeyboardEvent) {
-      if (event.key === 'Escape') onClose();
-    }
-    window.addEventListener('keydown', onKeyDown);
-    return () => window.removeEventListener('keydown', onKeyDown);
-  }, [onClose]);
 
   function handleSubmit(event: FormEvent) {
     event.preventDefault();
@@ -171,6 +169,7 @@ function ReportDialog({
   return (
     <div className="dialog-overlay">
       <div
+        ref={dialogRef}
         className="dialog"
         role="dialog"
         aria-modal="true"
@@ -344,7 +343,7 @@ export function Community() {
                   }}
                   aria-label={`${interested ? 'Remove RSVP from' : 'RSVP to'} ${event.title}`}
                 >
-                  {interested ? "You're interested ✓" : "I'm interested"}
+                  {interested ? (<>You're interested <span aria-hidden="true">✓</span></>) : "I'm interested"}
                 </button>
                 <p className="thread-meta event-count">
                   {displayedCount} interested
@@ -399,7 +398,7 @@ export function Community() {
                     }}
                     aria-label={`${saved ? 'Remove' : 'Save'} resource: ${resource.title}`}
                   >
-                    {saved ? 'Saved ✓' : 'Save'}
+                    {saved ? (<>Saved <span aria-hidden="true">✓</span></>) : 'Save'}
                   </button>
                 </div>
               </article>

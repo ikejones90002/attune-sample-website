@@ -9,9 +9,61 @@ import { Avatar } from '../components/Avatar';
 import { EmptyState } from '../components/EmptyState';
 import { ProfileDetailDialog } from '../components/ProfileDetailDialog';
 import { ProfileReportDialog } from '../components/ProfileReportDialog';
+import { useFocusTrap } from '../hooks/useFocusTrap';
 import './Discover.css';
 
 const DEFAULT_PREFS = { ageMin: 18, ageMax: 99, maxDistanceMi: 100 };
+
+/** Match celebration alertdialog. Owns the focus trap; closes on Escape. */
+function MatchDialog({
+  profile,
+  onClose,
+  onMessage,
+}: {
+  profile: SampleProfile;
+  onClose: () => void;
+  onMessage: () => void;
+}) {
+  const dialogRef = useRef<HTMLDivElement | null>(null);
+  const close = useCallback(() => onClose(), [onClose]);
+  useFocusTrap(dialogRef, close);
+
+  return (
+    <div className="match-overlay" onClick={onClose}>
+      <div
+        ref={dialogRef}
+        tabIndex={-1}
+        role="alertdialog"
+        aria-modal="true"
+        aria-labelledby="match-heading"
+        className="match-dialog"
+        onClick={(e) => e.stopPropagation()}
+      >
+        <Avatar name={profile.name} gradient={profile.gradient} photo={profile.photo} size={120} />
+        <h2 id="match-heading" className="match-title">
+          It&apos;s a match!
+        </h2>
+        <p className="match-lead">You and {profile.name} liked each other.</p>
+        <div className="match-actions">
+          <button
+            type="button"
+            className="btn-primary btn-large"
+            onClick={onMessage}
+          >
+            Send a message
+          </button>
+          <button
+            type="button"
+            className="btn-secondary"
+            onClick={onClose}
+          >
+            Keep exploring
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
 
 export function Discover() {
   const navigate = useNavigate();
@@ -164,13 +216,6 @@ export function Discover() {
     window.addEventListener('keydown', onKeyDown);
     return () => window.removeEventListener('keydown', onKeyDown);
   }, [handleLike, handlePass, matchedId, detailProfile, reportTarget, menuOpen]);
-
-  const dialogRef = useRef<HTMLDivElement | null>(null);
-  useEffect(() => {
-    if (matchedId) {
-      dialogRef.current?.focus();
-    }
-  }, [matchedId]);
 
   const matchedProfile: SampleProfile | null = matchedId
     ? (SAMPLE_PROFILES.find((p) => p.id === matchedId) ?? null)
@@ -408,39 +453,11 @@ export function Discover() {
       )}
 
       {matchedProfile && (
-        <div className="match-overlay" onClick={() => setMatchedId(null)}>
-          <div
-            ref={dialogRef}
-            tabIndex={-1}
-            role="alertdialog"
-            aria-modal="true"
-            aria-labelledby="match-heading"
-            className="match-dialog"
-            onClick={(e) => e.stopPropagation()}
-          >
-            <Avatar name={matchedProfile.name} gradient={matchedProfile.gradient} photo={matchedProfile.photo} size={120} />
-            <h2 id="match-heading" className="match-title">
-              It&apos;s a match!
-            </h2>
-            <p className="match-lead">You and {matchedProfile.name} liked each other.</p>
-            <div className="match-actions">
-              <button
-                type="button"
-                className="btn-primary btn-large"
-                onClick={() => navigate(`/messages/${matchedProfile.id}`)}
-              >
-                Send a message
-              </button>
-              <button
-                type="button"
-                className="btn-secondary"
-                onClick={() => setMatchedId(null)}
-              >
-                Keep exploring
-              </button>
-            </div>
-          </div>
-        </div>
+        <MatchDialog
+          profile={matchedProfile}
+          onClose={() => setMatchedId(null)}
+          onMessage={() => navigate(`/messages/${matchedProfile.id}`)}
+        />
       )}
     </div>
   );

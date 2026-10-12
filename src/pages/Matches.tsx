@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useMemo, useRef, useState } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAttune } from '../lib/api/AttuneApiProvider';
 import { SAMPLE_PROFILES } from '../data/profiles';
@@ -6,6 +6,7 @@ import type { SampleProfile } from '../lib/types';
 import { Avatar } from '../components/Avatar';
 import { DemoNote } from '../components/DemoNote';
 import { EmptyState } from '../components/EmptyState';
+import { useFocusTrap } from '../hooks/useFocusTrap';
 import './Matches.css';
 import '../components/ProfileModals.css';
 
@@ -28,28 +29,18 @@ interface ConfirmDialogProps {
  *  closes, focus moves to Cancel on open and is restored on close. */
 function MatchConfirmDialog({ profile, action, onConfirm, onCancel }: ConfirmDialogProps) {
   const cancelRef = useRef<HTMLButtonElement>(null);
-  const restoreRef = useRef<HTMLElement | null>(null);
+  const dialogRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    restoreRef.current = document.activeElement as HTMLElement | null;
-    cancelRef.current?.focus();
-    function onKeyDown(event: KeyboardEvent) {
-      if (event.key === 'Escape') {
-        onCancel();
-      }
-    }
-    window.addEventListener('keydown', onKeyDown);
-    return () => {
-      window.removeEventListener('keydown', onKeyDown);
-      restoreRef.current?.focus();
-    };
-  }, [onCancel]);
+  // Focus trap: keeps Tab inside the modal, moves focus to Cancel on open,
+  // restores it on close; Escape cancels.
+  useFocusTrap(dialogRef, onCancel);
 
   const isBlock = action === 'block';
 
   return (
     <div className="modal-overlay" onClick={onCancel}>
       <div
+        ref={dialogRef}
         className="modal"
         role="dialog"
         aria-modal="true"
@@ -122,6 +113,10 @@ export function Matches() {
   if (matched.length === 0) {
     return (
       <div className="matches-page">
+        <header className="page-header">
+          <h1 className="page-title">Matches</h1>
+          <p className="page-subtitle">People who liked you back — start the conversation.</p>
+        </header>
         <EmptyState
           title="No matches yet"
           body="When someone you like likes you back, they'll appear here."

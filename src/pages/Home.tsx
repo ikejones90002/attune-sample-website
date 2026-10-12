@@ -5,15 +5,17 @@ function Home() {
   return (
     <div className="home-page">
       <section className="hero">
-        <h2 className="hero-title">
+        <h1 className="hero-title">
           Dating built for <span className="gradient-text">how you actually connect</span>
-        </h2>
+        </h1>
         <p className="hero-subtitle">
           An accessibility-first dating platform designed with and for Deaf/Hard-of-Hearing 
           and Blind/Low-Vision communities. Not retrofitted. Built right from day one.
         </p>
         <div className="cta-buttons">
-          <button className="cta-primary">Join the Waitlist</button>
+          <Link to="/onboarding" className="cta-primary">
+            Join the Waitlist
+          </Link>
           <Link to="/features" className="cta-secondary">
             Explore Features
           </Link>
@@ -21,7 +23,7 @@ function Home() {
       </section>
       <section className="features-preview">
         <article className="feature-card">
-          <div className="feature-icon">🤝</div>
+          <div className="feature-icon" aria-hidden="true">🤝</div>
           <h3>Accessibility First</h3>
           <p>
             Built from the ground up with screen readers, high contrast, 
@@ -29,7 +31,7 @@ function Home() {
           </p>
         </article>
         <article className="feature-card">
-          <div className="feature-icon">💬</div>
+          <div className="feature-icon" aria-hidden="true">💬</div>
           <h3>Multi-Modal Communication</h3>
           <p>
             Express yourself through video, audio, text, and sign language. 
@@ -37,7 +39,7 @@ function Home() {
           </p>
         </article>
         <article className="feature-card">
-          <div className="feature-icon">🎯</div>
+          <div className="feature-icon" aria-hidden="true">🎯</div>
           <h3>Authentic Connections</h3>
           <p>
             Match with people who understand your communication style 
@@ -69,7 +71,9 @@ function Home() {
       <section className="cta-section">
         <h2>Ready to connect authentically?</h2>
         <p>Join our community and help shape the future of accessible dating.</p>
-        <button className="cta-primary">Get Early Access</button>
+        <Link to="/onboarding" className="cta-primary">
+          Get Early Access
+        </Link>
       </section>
     </div>
   );

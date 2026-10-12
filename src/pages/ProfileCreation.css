@@ -367,3 +367,17 @@
     font-size: 1.5rem;
   }
 }
+/* Inline form messages (announced via role="alert" / role="status") */
+.form-error {
+  color: var(--color-error);
+  font-size: var(--text-sm);
+  font-weight: 600;
+  margin-top: var(--space-1);
+}
+
+.form-success {
+  color: var(--color-success);
+  font-size: var(--text-sm);
+  font-weight: 600;
+  margin-bottom: var(--space-3);
+}

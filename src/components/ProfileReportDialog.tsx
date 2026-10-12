@@ -1,6 +1,7 @@
-import { useEffect, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import type { FormEvent } from 'react';
 import { DemoNote } from './DemoNote';
+import { useFocusTrap } from '../hooks/useFocusTrap';
 import './ProfileModals.css';
 
 const PROFILE_REPORT_REASONS = [
@@ -25,25 +26,13 @@ export function ProfileReportDialog({
   onReport,
   onClose,
 }: ProfileReportDialogProps) {
-  const closeRef = useRef<HTMLButtonElement>(null);
-  const restoreRef = useRef<HTMLElement | null>(null);
+  const dialogRef = useRef<HTMLDivElement>(null);
   const [reason, setReason] = useState(PROFILE_REPORT_REASONS[0]);
   const [submitted, setSubmitted] = useState(false);
 
-  useEffect(() => {
-    restoreRef.current = document.activeElement as HTMLElement | null;
-    closeRef.current?.focus();
-    function onKeyDown(event: KeyboardEvent) {
-      if (event.key === 'Escape') {
-        onClose();
-      }
-    }
-    window.addEventListener('keydown', onKeyDown);
-    return () => {
-      window.removeEventListener('keydown', onKeyDown);
-      restoreRef.current?.focus();
-    };
-  }, [onClose]);
+  // Focus trap: keeps Tab inside the modal, moves focus in on open,
+  // restores it on close; Escape closes.
+  useFocusTrap(dialogRef, onClose);
 
   function handleSubmit(event: FormEvent) {
     event.preventDefault();
@@ -54,6 +43,7 @@ export function ProfileReportDialog({
   return (
     <div className="modal-overlay" onClick={onClose}>
       <div
+        ref={dialogRef}
         className="modal"
         role="dialog"
         aria-modal="true"
@@ -92,7 +82,7 @@ export function ProfileReportDialog({
         )}
         <DemoNote text="Demo preview — reports are stored only in this browser in the prototype." />
         <div className="modal-actions">
-          <button ref={closeRef} type="button" className="btn-text" onClick={onClose}>
+          <button type="button" className="btn-text" onClick={onClose}>
             Close
           </button>
         </div>

@@ -4,7 +4,7 @@ function Architecture() {
   return (
     <div className="architecture-page">
       <header className="page-header">
-        <h2>Technical Architecture</h2>
+        <h1>Technical Architecture</h1>
         <p className="page-subtitle">
           Built for scale, accessibility, and speed to market. Pre-revenue tech stack optimized 
           for a media-heavy, real-time dating platform.
