@@ -1,0 +1,25 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Attune — redirecting…</title>
+    <script>
+      // SPA deep-link fallback for GitHub Pages.
+      // GitHub Pages serves this 404.html for any path that is not a real
+      // file, so direct loads and refreshes of client-side routes land here.
+      // The requested path is encoded into a query string on the app root;
+      // the restore script in index.html turns it back into the real URL
+      // before React Router reads it. (Pattern: spa-github-pages.)
+      var pathSegmentsToKeep = 1; // keep "/attune-sample-website"
+      var l = window.location;
+      l.replace(
+        l.protocol + '//' + l.hostname + (l.port ? ':' + l.port : '') +
+        l.pathname.split('/').slice(0, 1 + pathSegmentsToKeep).join('/') + '/?/' +
+        l.pathname.slice(1).split('/').slice(pathSegmentsToKeep).join('/').replace(/&/g, '~and~') +
+        (l.search ? '&' + l.search.slice(1).replace(/&/g, '~and~') : '') +
+        l.hash
+      );
+    </script>
+  </head>
+  <body></body>
+</html>
