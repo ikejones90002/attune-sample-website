@@ -1,0 +1,122 @@
+.waitlist-page {
+  min-height: 100vh;
+  width: 100%;
+  padding: 3rem 1rem 4rem;
+  background: linear-gradient(180deg, var(--bg-primary) 0%, var(--bg-secondary) 100%);
+}
+
+.waitlist-container {
+  width: 100%;
+  max-width: 700px;
+  margin: 0 auto;
+}
+
+.waitlist-title {
+  font-size: 2.5rem;
+  line-height: 1.15;
+  margin-bottom: 1rem;
+  color: var(--text-primary);
+}
+
+.waitlist-intro {
+  color: var(--text-secondary);
+  font-size: 1.125rem;
+  line-height: 1.6;
+  margin-bottom: 2rem;
+}
+
+.waitlist-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border-subtle);
+  border-radius: 16px;
+  padding: 2rem;
+}
+
+.waitlist-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+}
+
+.waitlist-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.waitlist-field label {
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.waitlist-required-note {
+  font-weight: 400;
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+}
+
+.waitlist-field input,
+.waitlist-field select,
+.waitlist-field textarea {
+  width: 100%;
+  padding: 0.8rem 1rem;
+  border-radius: 10px;
+  border: 1px solid var(--border-subtle);
+  background: var(--bg-tertiary);
+  color: var(--text-primary);
+  font-size: 1rem;
+  font-family: inherit;
+}
+
+.waitlist-field input:focus,
+.waitlist-field select:focus,
+.waitlist-field textarea:focus {
+  outline: 2px solid var(--accent-primary);
+  outline-offset: 1px;
+  border-color: var(--accent-primary);
+}
+
+.waitlist-hint {
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+.waitlist-error {
+  border: 1px solid var(--error);
+  border-radius: 10px;
+  padding: 1rem;
+  color: var(--error);
+}
+
+.waitlist-submit {
+  align-self: flex-start;
+  cursor: pointer;
+  border: none;
+  font-size: 1rem;
+}
+
+.waitlist-submit:disabled {
+  opacity: 0.6;
+  cursor: wait;
+}
+
+.waitlist-privacy {
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+.waitlist-success-title {
+  color: var(--text-primary);
+  margin-bottom: 1rem;
+}
+
+.waitlist-success-title:focus {
+  outline: none;
+}
+
+.waitlist-success p {
+  color: var(--text-secondary);
+  line-height: 1.6;
+}

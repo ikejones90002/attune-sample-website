@@ -13,7 +13,7 @@ function Home() {
           and Blind/Low-Vision communities. Not retrofitted. Built right from day one.
         </p>
         <div className="cta-buttons">
-          <Link to="/onboarding" className="cta-primary">
+          <Link to="/waitlist" className="cta-primary">
             Join the Waitlist
           </Link>
           <Link to="/features" className="cta-secondary">
@@ -71,7 +71,7 @@ function Home() {
       <section className="cta-section">
         <h2>Ready to connect authentically?</h2>
         <p>Join our community and help shape the future of accessible dating.</p>
-        <Link to="/onboarding" className="cta-primary">
+        <Link to="/waitlist" className="cta-primary">
           Get Early Access
         </Link>
       </section>

@@ -10,6 +10,7 @@ import About from './pages/About';
 import Roadmap from './pages/Roadmap';
 import Architecture from './pages/Architecture';
 import Onboarding from './pages/Onboarding';
+import Waitlist from './pages/Waitlist';
 import ProfileCreation from './pages/ProfileCreation';
 import { Discover } from './pages/Discover';
 import { Matches } from './pages/Matches';
@@ -88,6 +89,7 @@ function App() {
           <Route path="/roadmap" element={<Roadmap />} />
           <Route path="/architecture" element={<Architecture />} />
           <Route path="/onboarding" element={<Onboarding />} />
+          <Route path="/waitlist" element={<Waitlist />} />
           <Route path="/profile" element={<ProfileCreation />} />
           <Route path="/swipe" element={<Discover />} />
           <Route path="/matches" element={<Matches />} />
@@ -102,6 +104,7 @@ function App() {
         <footer className="app-footer">
           <div className="footer-content">
             <nav className="footer-links" aria-label="Footer">
+              <Link to="/waitlist">Join the Waitlist</Link>
               <Link to="/features">Features</Link>
               <Link to="/about">About</Link>
               <Link to="/roadmap">Roadmap</Link>
